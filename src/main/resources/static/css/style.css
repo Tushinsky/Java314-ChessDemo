@@ -1,0 +1,61 @@
+h1 {
+    color:#0000FF;
+}
+
+h2 {
+    color:#FF0000;
+}
+
+table {
+    border-collapse: collapse;
+    border-width:1;
+}
+
+table th, table td {
+    padding: 5px;
+}
+
+.registry {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    border: solid 1px blue;
+    width: 300px;
+    background-color: blanchedalmond;
+    padding: 5px 5px;
+}
+
+.registry .registry_item {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    align-items: center;
+    align-content: center;
+}
+
+.registry .registry_item input {
+    width: 100%;
+    text-align: center;
+}
+
+.registry>.registry_item:nth-child(7){
+    border-top: 1px solid blue;
+    padding: 5px;
+}
+
+.registry>.registry_item:nth-child(7)>input{
+    width: 50%;
+    height: 25px;
+}
+
+.admin_ {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    padding-left: 20px;
+}
+
+.admin_ a{
+    font-size: 14pt;
+    text-decoration: none;
+}
