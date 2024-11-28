@@ -8,22 +8,34 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="<@spring.url 'css/style.css'/>">
+    <link rel="stylesheet" type="text/css" href="<@spring.url 'style.css'/>">
 </head>
 <body>
-<form class="login" action="login" method="post">
+<form class="logon" method="post" action="logon">
     <div class="registry">
         <div class="registry_item">
-            <label for="nikName">Enter nikName:</label>
-            <input id="nikName" type="text" name="nikName">
+            <label for="name">Enter name:</label>
+            <br/>
+            <input id="name" type="text" name="name">
         </div>
+        <br/>
+
+        <div class="registry_item">
+            <label for="nickName">Enter nickName:</label>
+            <br/>
+            <input id="nickName" type="text" name="nickName">
+        </div>
+        <br/>
         <div class="registry_item">
             <label for="password">Enter password:</label>
+            <br/>
             <input id="password" type="password" name="password">
         </div>
+        <br/>
         <div class="registry_item">
-            <input type="checkbox" name="rememberMe">REMEMBER ME
-            <input type="submit" name="login" value="Login">
+            <!--input type="checkbox" name="rememberMe">REMEMBER ME-->
+            <br/>
+            <input type="submit" value="Login"/>
         </div>
     </div>
 </form>

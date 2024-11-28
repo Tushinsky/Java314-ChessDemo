@@ -11,8 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
@@ -27,29 +26,29 @@ public class LoginController {
         return "login";
     }
 
-    @PostMapping(value = "/login")
+    @PostMapping(value = "/logon")
     public String authenticateUser(@Validated ChessManDto chessManDto) {
         // получаем пользователя по нику
         logger.info("ChessManDto: " + chessManDto.toString());
-        ChessMan authChessMan = chessManService.getByNic(chessManDto.getNicName());
-        if (authChessMan == null) {
-            return "redirect:/start_page";
-        }
+        ChessMan authChessMan = chessManService.getByName(chessManDto.getName());
         logger.info("authChessMan: " + authChessMan.toString());
-        // проверяем пароль
-        if(Objects.equals(authChessMan.getPassword(), chessManDto.getPassword())) {
-            // проверяем права пользователя - USER or ADMIN
-            if(authChessMan.getRole().equals(String.valueOf(Role.USER))) {
-                // если это обычный пользователь и его аккаунт не был удалён или заблокирован (DELETE or BANNED)
-                if(authChessMan.getState().equals(String.valueOf(State.ACTIVE)) ||
-                        authChessMan.getState().equals(String.valueOf(State.INACTIVE))) {
-                    //перенаправляем на домашнюю страницу пользователя
-                    return "redirect:/home_page";
+        if(authChessMan != null) {
+            // проверяем пароль
+            if(Objects.equals(authChessMan.getPassword(), chessManDto.getPassword())) {
+                // проверяем права пользователя - USER or ADMIN
+                if(authChessMan.getRole().equals(String.valueOf(Role.USER))) {
+                    // если это обычный пользователь и его аккаунт не был удалён или заблокирован (DELETE or BANNED)
+                    if(authChessMan.getState().equals(String.valueOf(State.ACTIVE)) ||
+                            authChessMan.getState().equals(String.valueOf(State.INACTIVE))) {
+                        //перенаправляем на домашнюю страницу пользователя
+                        return "redirect:/home_page/" + authChessMan.getId();
+                    }
+                } else {
+                    //перенаправляем на домашнюю страницу администратора
+                    return "redirect:/admin_page";
                 }
-            } else {
-                //перенаправляем на домашнюю страницу администратора
-                return "redirect:/admin_page";
             }
+
         }
 
 

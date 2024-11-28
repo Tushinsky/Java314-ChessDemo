@@ -14,6 +14,12 @@ import java.util.Optional;
 public class ChessManServiceImpl implements ChessManService {
 
     private final ChessManRepository repository;
+
+    @Override
+    public ChessMan getByName(String name) {
+        return repository.findByName(name);
+    }
+
     @Override
     @Transactional
     public ChessMan getByEmail(String email) {

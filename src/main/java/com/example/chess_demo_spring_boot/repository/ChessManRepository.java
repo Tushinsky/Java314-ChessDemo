@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface ChessManRepository extends JpaRepository<ChessMan, Long> {
+    ChessMan findByName(String name);
     ChessMan getByEmail(String email);
     List<ChessMan> findByEmailLike(String email);
     ChessMan getByNic(String nic);

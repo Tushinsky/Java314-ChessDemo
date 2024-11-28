@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ChessManService {
+    ChessMan getByName(String name);
     ChessMan getByEmail(String email);
     List<ChessMan> getByEmailLike(String email);
     ChessMan getByNic(String nic);

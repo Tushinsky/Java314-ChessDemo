@@ -6,6 +6,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -21,36 +22,43 @@ public class ChessMan implements Serializable {
     private Long id;
 
     @Column(name = "name")
-//    @JdbcTypeCode(SqlTypes.NVARCHAR)
+    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String name;
 
     @Column(name = "email", unique = true)
-//    @JdbcTypeCode(SqlTypes.NVARCHAR)
+    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String email;
 
     @Column(name = "nic", unique = true)
-//    @JdbcTypeCode(SqlTypes.NVARCHAR)
+    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String nic;
 
     @Column(name = "password")
-//    @JdbcTypeCode(SqlTypes.NVARCHAR)
+    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String password;
 
     @Column(name = "city")
-//    @JdbcTypeCode(SqlTypes.NVARCHAR)
+    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String city;
 
     @Column(name = "country")
-//    @JdbcTypeCode(SqlTypes.NVARCHAR)
+    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String country;
 
     @Column(name = "role")
-//    @JdbcTypeCode(SqlTypes.NVARCHAR)
+    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String role;
 
     @Column(name = "state")
-//    @JdbcTypeCode(SqlTypes.NVARCHAR)
+    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String state;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "id")
+    private Game_Application gameApplication;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<History> histories;
 
 //    private String activationUUID;
 //    public boolean isAdmin() {

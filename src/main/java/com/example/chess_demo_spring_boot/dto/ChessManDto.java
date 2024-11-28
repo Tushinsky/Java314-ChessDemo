@@ -1,18 +1,30 @@
 package com.example.chess_demo_spring_boot.dto;
 
-import lombok.Data;
+import com.example.chess_demo_spring_boot.domain.ChessMan;
+import lombok.*;
 
+/**
+ * DTO for {@link ChessMan}
+ */
 @Data
 public class ChessManDto {
-//    Long id;
-    String nicName;
+    String name;
+    String nickName;
     String password;
 
     @Override
     public String toString() {
         return "ChessManDto{" +
-                "nicName='" + nicName + '\'' +
+                "name='" + name + '\'' +
+                "nic='" + nickName + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
+//    public static ChessManDto from(ChessMan chessMan) {
+//        return new ChessManDto(chessMan.getNicName(), chessMan.getPassword());
+//    }
+//
+//    public static List<ChessManDto> from(List<ChessMan> chessMEN) {
+//        return chessMEN.stream().map(ChessManDto::from).collect(Collectors.toList());
+//    }
 }
