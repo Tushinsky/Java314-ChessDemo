@@ -53,11 +53,11 @@ public class ChessMan implements Serializable {
     @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String state;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "id")
-    private Game_Application gameApplication;
+//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+////    @JoinColumn(name = "id")
+//    private Game_Application gameApplication;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<History> histories;
 
 //    private String activationUUID;

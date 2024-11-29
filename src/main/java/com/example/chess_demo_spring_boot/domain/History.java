@@ -26,7 +26,7 @@ public class History {
     @Column(name = "result")
     private String result;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = ChessMan.class)
-    @JoinColumn(name = "idChessman", referencedColumnName = "id")
+    @ManyToOne()
+    @JoinColumn(name = "idchessman")
     private ChessMan chessMan;
 }

@@ -16,7 +16,7 @@ public class ChessManDto {
     public String toString() {
         return "ChessManDto{" +
                 "name='" + name + '\'' +
-                "nic='" + nickName + '\'' +
+                ", nick='" + nickName + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

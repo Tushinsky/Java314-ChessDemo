@@ -23,7 +23,7 @@ public class Game_Application {
     private Time gameTime;
     @Column(name = "busy")
     private boolean busy;
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = ChessMan.class)
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = ChessMan.class)
     @JoinColumn(name = "idChessman", referencedColumnName = "id")
     private List<ChessMan> chessManList;
 }
