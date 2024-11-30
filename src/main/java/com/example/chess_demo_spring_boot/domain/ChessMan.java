@@ -22,35 +22,27 @@ public class ChessMan implements Serializable {
     private Long id;
 
     @Column(name = "name")
-    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String name;
 
     @Column(name = "email", unique = true)
-    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String email;
 
     @Column(name = "nic", unique = true)
-    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String nic;
 
     @Column(name = "password")
-    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String password;
 
     @Column(name = "city")
-    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String city;
 
     @Column(name = "country")
-    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String country;
 
     @Column(name = "role")
-    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String role;
 
     @Column(name = "state")
-    @JdbcTypeCode(SqlTypes.NVARCHAR)
     private String state;
 
 //    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

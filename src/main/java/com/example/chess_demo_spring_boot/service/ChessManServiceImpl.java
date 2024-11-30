@@ -16,6 +16,7 @@ public class ChessManServiceImpl implements ChessManService {
     private final ChessManRepository repository;
 
     @Override
+    @Transactional
     public ChessMan getByName(String name) {
         return repository.findByName(name);
     }

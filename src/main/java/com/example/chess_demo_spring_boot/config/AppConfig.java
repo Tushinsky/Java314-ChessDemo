@@ -71,7 +71,7 @@ public class AppConfig {
     @Bean
     public Properties properties() {
         Properties properties = new Properties();
-//        properties.setProperty("spring.jpa.hibernate.dialect", environment.getProperty("spring.jpa.hibernate.dialect"));
+        properties.setProperty("spring.jpa.hibernate.dialect", environment.getProperty("spring.jpa.hibernate.dialect"));
         properties.setProperty("spring.jpa.hibernate.ddl-auto", environment.getProperty("spring.jpa.hibernate.ddl-auto"));
         properties.setProperty("spring.jpa.show-sql", environment.getProperty("spring.jpa.show-sql"));
         properties.setProperty("spring.jpa.properties.hibernate.format_sql",
