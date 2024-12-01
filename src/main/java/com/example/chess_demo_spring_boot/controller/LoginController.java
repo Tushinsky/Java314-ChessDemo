@@ -26,21 +26,26 @@ public class LoginController {
         return "login";
     }
 
+    /**
+     * Аутентификация входящего пользователя. Если пользователь с данным именем есть, проверяем пароль, его права
+     * доступа, состояние его аккаунта. В зависимости от результата направляем его либо на страницу администратора,
+     * либо на домашнюю страницу
+     * @param chessManDto шаблон входящего пользователя
+     * @return страница с данными
+     */
     @PostMapping(value = "/logon")
     public String authenticateUser(@Validated ChessManDto chessManDto) {
         // получаем пользователя по нику
         logger.info("ChessManDto: " + chessManDto.toString());
         ChessMan authChessMan = chessManService.getByName(chessManDto.getName());
-        logger.info("authChessMan: " + authChessMan.toString());
+
         if(authChessMan != null) {
+            logger.info("authChessMan: " + authChessMan.toString());
             // проверяем пароль
             if(Objects.equals(authChessMan.getPassword(), chessManDto.getPassword())) {
-                // проверяем права пользователя - USER or ADMIN
                 if(authChessMan.getRole().equals(String.valueOf(Role.USER))) {
-                    // если это обычный пользователь и его аккаунт не был удалён или заблокирован (DELETE or BANNED)
                     if(authChessMan.getState().equals(String.valueOf(State.ACTIVE)) ||
                             authChessMan.getState().equals(String.valueOf(State.INACTIVE))) {
-                        //перенаправляем на домашнюю страницу пользователя
                         return "redirect:/home_page/" + authChessMan.getId();
                     }
                 } else {
@@ -51,7 +56,7 @@ public class LoginController {
 
         }
 
-
+        // если такого пользователя нет, перенаправляем на стартовую страницу
         return "redirect:/start_page";
     }
 }

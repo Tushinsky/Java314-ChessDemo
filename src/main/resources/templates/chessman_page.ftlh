@@ -8,8 +8,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Chessman List</title>
-    <link rel="stylesheet"
-               type="text/css" href="<@spring.url '/css/style.css'/>"/>
+    <style>
+        <#include "style.css">
+    </style>
 </head>
 <body>
     <a href="<@spring.url '/admin_page'/>">Back to main page</a>

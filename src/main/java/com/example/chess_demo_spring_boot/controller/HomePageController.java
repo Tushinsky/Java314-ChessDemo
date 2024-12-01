@@ -34,7 +34,9 @@ public class HomePageController {
         List<History> historyList = historyService.getAllByChessMan(man);
         logger.info("historyList: size=" + historyList.size());
         model.addAttribute("name", man.getName());
-        model.addAttribute("historyList", historyList);
+        if(historyList.size() > 0) {
+            model.addAttribute("historyList", historyList);
+        }
         return "home_page";
     }
 }
