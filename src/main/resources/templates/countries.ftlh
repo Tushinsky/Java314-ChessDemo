@@ -5,15 +5,15 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        <#include "style.css">
+        <#include "css/style.css">
     </style>
     <title>Country List</title>
 </head>
 <body>
-<a href="<@spring.url'/admin_page'/>">Back to main page</a>
+<a href="<@spring.url'/admin_page'/>">На главную страницу</a>
 <br/>
 <h1>Country list</h1>
-  <table border="1">
+  <table>
     <tr>
       <th width="50">ID</th>
       <th width="350">Name</th>

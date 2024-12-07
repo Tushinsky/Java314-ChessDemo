@@ -9,14 +9,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Chessman List</title>
     <style>
-        <#include "style.css">
+        <#include "css/style.css">
     </style>
 </head>
 <body>
     <a href="<@spring.url '/admin_page'/>">Back to main page</a>
     <br/>
     <h1>User list</h1>
-    <table border="1">
+    <table>
         <tr>
             <th>ID</th>
             <th>Name</th>

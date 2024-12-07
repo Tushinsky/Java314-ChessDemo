@@ -9,16 +9,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ChessBattle</title>
     <style>
-        <#include "style.css">
+        <#include "css/style.css">
+        <#include "css/admin.css">
     </style>
 </head>
 <body>
-<h1>Welcome to ChessBattle</h1>
+<h1>Добро пожаловать в клуб любителей шахмат!</h1>
 <br/>
 <div class="admin_">
-    <a href="<@spring.url '/registration'/>">Registration</a>
-    <a href="<@spring.url '/login'/>">Log In</a>
-    <a href="<@spring.url '/admin_page'/>">Administration</a>
+    <a href="<@spring.url '/registration'/>">Регистрация</a>
+    <a href="<@spring.url '/login'/>">Войти</a>
+    <a href="<@spring.url '/admin_page'/>">Инструменты администратора</a>
 </div>
 </body>
 </html>

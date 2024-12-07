@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Page</title>
     <style>
-        <#include "style.css">
+        <#include "css/style.css">
+        <#include "css/admin.css">
     </style>
 </head>
 <body>

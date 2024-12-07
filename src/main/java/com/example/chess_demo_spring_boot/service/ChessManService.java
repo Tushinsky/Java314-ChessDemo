@@ -1,6 +1,8 @@
 package com.example.chess_demo_spring_boot.service;
 
 import com.example.chess_demo_spring_boot.domain.ChessMan;
+import com.example.chess_demo_spring_boot.domain.History;
+import com.example.chess_demo_spring_boot.dto.HistoryDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,4 +23,6 @@ public interface ChessManService {
     void removeChessMan(Long id);
 
     List<ChessMan> getAll();
+
+    List<HistoryDto> getAllHistoryByChessMan(ChessMan chessMan);
 }

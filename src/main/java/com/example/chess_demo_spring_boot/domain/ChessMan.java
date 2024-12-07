@@ -45,9 +45,9 @@ public class ChessMan implements Serializable {
     @Column(name = "state")
     private String state;
 
-//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-////    @JoinColumn(name = "id")
-//    private Game_Application gameApplication;
+    @OneToOne(targetEntity = Game_Application.class)
+    @JoinColumn(name = "id", referencedColumnName = "idchessman")
+    private Game_Application gameApplication;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<History> histories;

@@ -23,7 +23,18 @@ public class Game_Application {
     private Time gameTime;
     @Column(name = "busy")
     private boolean busy;
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = ChessMan.class)
-    @JoinColumn(name = "idChessman", referencedColumnName = "id")
-    private List<ChessMan> chessManList;
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = ChessMan.class)
+    @JoinColumn(name = "idchessman", referencedColumnName = "id")
+    private ChessMan chessMan;
+
+    @Override
+    public String toString() {
+        return "Game_Application{" +
+                "id=" + id +
+                ", color='" + color + '\'' +
+                ", gameTime=" + gameTime +
+                ", busy=" + busy +
+                ", chessMan=" + chessMan +
+                '}';
+    }
 }

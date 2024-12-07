@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        <#include "style.css">
+        <#include "css/style.css">
     </style>
     <title>City List</title>
 </head>
@@ -18,7 +18,7 @@
 <a href="<@spring.url '/admin_page'/>">Back to main page</a>
 <br/>
 <h1>City list</h1>
-  <table border="1">
+  <table>
     <tr>
       <th width="50">ID</th>
       <th width="350">Name</th>

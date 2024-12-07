@@ -1,0 +1,28 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    background-color: beige;
+}
+
+h1 {
+    color:#0000FF;
+}
+
+h2 {
+    color:#FF0000;
+}
+
+table {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    border: 1px solid black;
+    padding: 5px;
+}
+

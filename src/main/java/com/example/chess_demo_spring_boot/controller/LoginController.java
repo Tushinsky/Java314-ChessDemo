@@ -40,7 +40,7 @@ public class LoginController {
         ChessMan authChessMan = chessManService.getByName(chessManDto.getName());
 
         if(authChessMan != null) {
-            logger.info("authChessMan: " + authChessMan.toString());
+            logger.info("authChessMan: " + authChessMan);
             // проверяем пароль
             if(Objects.equals(authChessMan.getPassword(), chessManDto.getPassword())) {
                 if(authChessMan.getRole().equals(String.valueOf(Role.USER))) {

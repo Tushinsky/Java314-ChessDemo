@@ -7,10 +7,13 @@ import lombok.Value;
 import java.sql.Time;
 import java.util.List;
 
+/**
+ * DTO for{@link com.example.chess_demo_spring_boot.domain.Game_Application}
+ */
 @Value
 public class Game_ApplicationDto {
     Long id;
-    List<ChessMan> chessManList;
+    ChessMan chessMan;
     Chess_Color color;
     Time gameTime;
     boolean busy;

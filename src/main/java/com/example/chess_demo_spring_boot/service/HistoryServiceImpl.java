@@ -1,6 +1,7 @@
 package com.example.chess_demo_spring_boot.service;
 
 import com.example.chess_demo_spring_boot.domain.ChessMan;
+import com.example.chess_demo_spring_boot.domain.ChessParty;
 import com.example.chess_demo_spring_boot.domain.History;
 import com.example.chess_demo_spring_boot.repository.HistoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,8 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     @Transactional
-    public List<History> getAllByDate(Date date) {
-        return repository.findAllByPartyDate(date);
+    public History getByChessParty(ChessParty chessParty) {
+        return repository.findByChessParty(chessParty);
     }
 
     @Override

@@ -1,0 +1,11 @@
+.admin_ {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    padding-left: 20px;
+}
+
+.admin_ a{
+    font-size: 18pt;
+    text-decoration: none;
+}

@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
     <style>
-        <#include "style.css">
+        <#include "css/style.css">
     </style>
 </head>
 <body>

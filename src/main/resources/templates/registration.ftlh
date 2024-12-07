@@ -9,7 +9,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Registration</title>
    <style>
-       <#include "style.css">
+       <#include "css/style.css">
+       <#include "css/registry.css">
    </style>
 </head>
 <body>
