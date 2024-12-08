@@ -107,3 +107,9 @@ table th, table td {
     max-height: 300px;
     overflow: auto;
 }
+
+.main_ {
+    display: flex;
+    flex-direction: row;
+    column-gap: 30px;
+}

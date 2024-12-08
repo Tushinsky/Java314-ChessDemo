@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-    <h1>Добро пожаловать, ${chessman.name}!</h1>
+    <h1>Добро пожаловать, ${chessman}!</h1>
     <br>
     <section class="one_">
         <#if historyList??>

@@ -8,6 +8,10 @@
     <title>Document</title>
 </head>
 <body>
-<h1>Not found!!!</h1>
+<#if errorMessage??>
+    <div class="errorMessage">
+     ${errorMessage}
+    </div>
+</#if>
 </body>
 </html>

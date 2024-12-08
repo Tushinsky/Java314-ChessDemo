@@ -14,7 +14,7 @@
    </style>
 </head>
 <body>
-
+<#include "error/error.ftlh">
 <br>
 <form class="registration" action="registration" method="post">
 

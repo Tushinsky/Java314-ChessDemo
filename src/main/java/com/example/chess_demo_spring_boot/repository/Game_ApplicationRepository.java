@@ -1,9 +1,7 @@
 package com.example.chess_demo_spring_boot.repository;
 
 import com.example.chess_demo_spring_boot.domain.ChessMan;
-import com.example.chess_demo_spring_boot.domain.Chess_Color;
 import com.example.chess_demo_spring_boot.domain.Game_Application;
-import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.sql.Time;

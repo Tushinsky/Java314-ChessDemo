@@ -23,7 +23,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class HomePageController {
     private final ChessManService chessManService;
-    private final HistoryService historyService;
     private final Game_ApplicationService gameApplicationService;
     private ChessMan chessMan;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -40,11 +39,14 @@ public class HomePageController {
             List<HistoryDto> historyList = chessManService.getAllHistoryByChessMan(chessMan);
             logger.info("historyList: size=" + historyList.size());
 
-            model.addAttribute("chessman", chessMan);
+            model.addAttribute("chessman", chessMan.getName());
             if (historyList.size() > 0) {
                 model.addAttribute("historyList", historyList);
 
             }
+
+            Game_Application game_application = gameApplicationService.getByChessMan(chessMan);
+            model.addAttribute("gameApp", game_application);
 
             List<Game_Application> appList = gameApplicationService.getAllByChessmanIsNot(chessMan);
             if (appList != null) {
@@ -52,9 +54,6 @@ public class HomePageController {
 //                appList.forEach(item -> logger.info(item.getChessMan().toString()));
                 model.addAttribute("appList", appList);
             }
-
-            Game_Application game_application = gameApplicationService.getByChessMan(chessMan);
-            model.addAttribute("gameApp", game_application);
 
             return "home_page";
         }

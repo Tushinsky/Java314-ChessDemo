@@ -4,7 +4,6 @@ import com.example.chess_demo_spring_boot.domain.ChessMan;
 import com.example.chess_demo_spring_boot.domain.ChessParty;
 import com.example.chess_demo_spring_boot.domain.History;
 
-import java.util.Date;
 import java.util.List;
 
 public interface HistoryService {

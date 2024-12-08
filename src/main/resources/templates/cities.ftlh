@@ -10,11 +10,7 @@
     <title>City List</title>
 </head>
 <body>
-<#if errorMessage??>
-    <div style="color:red;font-style:italic;">
-     ${errorMessage}
-    </div>
-</#if>
+<#include "error/error.ftlh">
 <a href="<@spring.url '/admin_page'/>">Back to main page</a>
 <br/>
 <h1>City list</h1>

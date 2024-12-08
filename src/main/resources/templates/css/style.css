@@ -26,3 +26,8 @@ table th, table td {
     padding: 5px;
 }
 
+.errorMessage {
+    color:red;
+    font-style:italic;
+    font-size: 18pt;
+}

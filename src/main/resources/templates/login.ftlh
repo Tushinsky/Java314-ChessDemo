@@ -13,6 +13,7 @@
     </style>
 </head>
 <body>
+<#include "error/error.ftlh">
 <form class="logon" method="post" action="logon">
     <div class="registry">
         <div class="registry_item">

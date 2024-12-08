@@ -34,7 +34,7 @@ public class LoginController {
      * @return страница с данными
      */
     @PostMapping(value = "/logon")
-    public String authenticateUser(@Validated ChessManDto chessManDto) {
+    public String authenticateUser(@Validated ChessManDto chessManDto, Model model) {
         // получаем пользователя по нику
         logger.info("ChessManDto: " + chessManDto.toString());
         ChessMan authChessMan = chessManService.getByName(chessManDto.getName());
@@ -52,11 +52,16 @@ public class LoginController {
                     //перенаправляем на домашнюю страницу администратора
                     return "redirect:/admin_page";
                 }
+            } else {
+                model.addAttribute("errorMessage", "Неверный пароль!");
             }
 
+        } else {
+            model.addAttribute("errorMessage", "Пользователь с таким именем не найден! " +
+                    "Попробуйте ещё раз или зарегистрируйтесь!");
         }
 
         // если такого пользователя нет, перенаправляем на стартовую страницу
-        return "redirect:/start_page";
+        return "login";
     }
 }
