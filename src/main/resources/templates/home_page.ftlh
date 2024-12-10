@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-    <h1>Добро пожаловать, ${chessman}!</h1>
+    <h1>Добро пожаловать, ${chessman.name}!</h1>
     <br>
     <section class="one_">
         <#if historyList??>
@@ -42,60 +42,41 @@
             <h3>Ещё нет ни одной проведённой партии</h3>
         </#if>
     </section>
+    <br />
     <section class="two_">
-        <h3>Заявка на игру</h3>
-        <form name="addApp" action="/home_page/addApp" method="POST">
-            <div class="app_">
-                <#if gameApp??>
-                    <div class="app_item">
-                        <input type="number" name="id" value="${gameApp.id}" hidden />
-                    </div>
-                    <div class="app_item">
-                        <label for="color">Цвет фигур</label>
-                        <select id="color" name="color">
-                            <option value="${gameApp.color}" selected>${gameApp.color}</option>
-                            <#if gameApp.color=="BLACK">
-                                <option value="WHITE">WHITE</option>
-                            <#else>
-                                <option value="BLACK">BLACK</option>
-                            </#if>
-                        </select>
-                    </div>
-                    <div class="app_item">
-                        Время на игру: <input type="time" name="time" value="${gameApp.gameTime}" />
-                    </div>
-                    <div class="app_item">
-                        Готов к игре: <input type="checkbox" name="busy" value="${gameApp.busy}" />
-                    </div>
-                    <div class="app_item">
-                        <input type="submit" value="Изменить" />
-                    </div>
-                <#else>
-                    <div class="app_item">
-                        <input type="number" name="id" value="0" hidden>
-                    </div>
-                    <div class="app_item">
-                        <label for="color">Цвет фигур</label>
-                        <select id="color" name="color">
-                            <option value="BLACK">BLACK</option>
-                            <option value="WHITE" selected>WHITE</option>
-                        </select>
-                    </div>
-                    <div class="app_item">
-                        <label for="time">Время на игру</label>
-                        <input id="time" type="time" name="time" placeholder="time...">
-                    </div>
-                    <div class="app_item">
-                        <label for="busy">Готов к игре</label>
-                        <input type="checkbox" name="busy" value="1" />
-                    </div>
-                    <div class="app_item">
-                        <input type="submit" value="Подать заявку" />
-                    </div>
-                </#if>
-            </div>
-        </form>
+        <div>
 
+            <#if !gameApp??>
+                <h3>Нет заявки на игру</h3>
+                <a href="<@spring.url '/gameApp_page/${chessman.id}'/>">Подать заявку</a>
+            <#else>
+                <a href="<@spring.url '/gameApp_page/${chessman.id}'/>">Посмотреть заявку</a>
+            </#if>
+        </div>
+        <div>
+            <#if appList??>
+                <table>
+                    <tr>
+                        <th width="100">Цвет фигур</th>
+                        <th width="100">Время</th>
+                        <th width="200">Ник</th>
+                        <th width="100">Занят</th>
+                        <th width="100">Вызов</th>
+                    </tr>
+
+                        <#list appList as app>
+                            <tr>
+                                <td>${app.color}</td>
+                                <td>${app.gameTime}</td>
+                                <td>${app.nic}</td>
+                                <td>${app.busy?string('yes','no')}</td>
+                                <td><a href="<@spring.url 'challenge/?id=${app.id}'/>">Вызвать</a></td>
+                            </tr>
+                        </#list>
+
+                </table>
+            </#if>
+        </div>
     </section>
 </body>
 </html>

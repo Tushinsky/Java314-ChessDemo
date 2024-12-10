@@ -2,6 +2,7 @@ package com.example.chess_demo_spring_boot.controller;
 
 import com.example.chess_demo_spring_boot.domain.ChessMan;
 import com.example.chess_demo_spring_boot.domain.Game_Application;
+import com.example.chess_demo_spring_boot.dto.Game_ApplicationDto;
 import com.example.chess_demo_spring_boot.dto.HistoryDto;
 import com.example.chess_demo_spring_boot.service.ChessManService;
 import com.example.chess_demo_spring_boot.service.Game_ApplicationService;
@@ -39,16 +40,20 @@ public class HomePageController {
             List<HistoryDto> historyList = chessManService.getAllHistoryByChessMan(chessMan);
             logger.info("historyList: size=" + historyList.size());
 
-            model.addAttribute("chessman", chessMan.getName());
+            model.addAttribute("chessman", chessMan);
             if (historyList.size() > 0) {
                 model.addAttribute("historyList", historyList);
 
             }
 
             Game_Application game_application = gameApplicationService.getByChessMan(chessMan);
-            model.addAttribute("gameApp", game_application);
+            if(game_application != null) {
+                logger.info(game_application.toString());
+                model.addAttribute("gameApp", game_application);
+            }
 
-            List<Game_Application> appList = gameApplicationService.getAllByChessmanIsNot(chessMan);
+
+            List<Game_ApplicationDto> appList = gameApplicationService.getAllByChessmanIsNot(chessMan);
             if (appList != null) {
 //                logger.info("appList: size=" + appList.size());
 //                appList.forEach(item -> logger.info(item.getChessMan().toString()));

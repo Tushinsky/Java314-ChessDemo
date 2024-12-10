@@ -1,21 +1,19 @@
 package com.example.chess_demo_spring_boot.dto;
 
-import com.example.chess_demo_spring_boot.domain.ChessMan;
-import com.example.chess_demo_spring_boot.domain.Chess_Color;
-import lombok.Value;
+import lombok.*;
 
 import java.sql.Time;
 
 /**
  * DTO for{@link com.example.chess_demo_spring_boot.domain.Game_Application}
  */
-@Value
+@Getter
+@Setter
+@Builder
 public class Game_ApplicationDto {
     Long id;
-    ChessMan chessMan;
-    Chess_Color color;
+    String nic;
+    String color;
     Time gameTime;
     boolean busy;
-
-
 }
