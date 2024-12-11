@@ -25,7 +25,7 @@
     text-align: center;
 }
 
-.history_ {
+.history_, .opponents-list {
     display: block;
     align-items: center;
     justify-content: center;
@@ -37,4 +37,10 @@
     max-height: 400px;
     overflow: auto;
     background: blanchedalmond;
+}
+
+.one_, .two_ {
+    display: block;
+    padding: 15px;
+    width: 50%;
 }

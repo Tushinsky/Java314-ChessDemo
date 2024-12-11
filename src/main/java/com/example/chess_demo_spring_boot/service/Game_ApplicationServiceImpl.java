@@ -51,15 +51,14 @@ public class Game_ApplicationServiceImpl implements Game_ApplicationService{
         logger.info("applicationList size=" + applicationList.size());
         List<Game_ApplicationDto> applicationDtos = new ArrayList<>();
         if(!applicationList.isEmpty()) {
-            applicationList.stream().filter(item ->
-                            !item.getChessMan().equals(chessMan)).forEach(item -> {
-                                Game_ApplicationDto dto = Game_ApplicationDto.builder().id(item.getId())
-                                        .nic(item.getChessMan().getNic())
-                                        .color(item.getColor())
-                                        .gameTime(item.getGameTime())
-                                        .busy(item.isBusy())
-                                                .build();
-                                applicationDtos.add(dto);
+            applicationList.stream().filter(item -> !item.getChessMan().equals(chessMan)).forEach(item -> {
+                Game_ApplicationDto dto = Game_ApplicationDto.builder().id(item.getId())
+                        .nic(item.getChessMan().getNic())
+                        .color(item.getColor())
+                        .gameTime(item.getGameTime())
+                        .busy(item.isBusy())
+                                .build();
+                applicationDtos.add(dto);
             });
             return applicationDtos;
         }

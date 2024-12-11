@@ -6,7 +6,6 @@ import com.example.chess_demo_spring_boot.dto.Game_ApplicationDto;
 import com.example.chess_demo_spring_boot.dto.HistoryDto;
 import com.example.chess_demo_spring_boot.service.ChessManService;
 import com.example.chess_demo_spring_boot.service.Game_ApplicationService;
-import com.example.chess_demo_spring_boot.service.HistoryService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,11 +64,5 @@ public class HomePageController {
         return "redirect:/start_page";
     }
 
-    @RequestMapping(value = "/home_page/addApp", method = RequestMethod.POST)
-    public String addApp(@ModelAttribute("gameApp") Game_Application game_application) {
-        game_application.setChessMan(chessMan);
-        logger.info(game_application.toString());
-//        this.gameApplicationService.save(game_application);
-        return "redirect:/home_page/" + chessMan.getId().toString();
-    }
+
 }

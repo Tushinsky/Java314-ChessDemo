@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +38,10 @@ public class HistoryServiceImpl implements HistoryService {
     @Transactional
     public List<History> getAllByChessMan(ChessMan chessMan) {
         return repository.findAllByChessMan(chessMan);
+    }
+
+    @Override
+    public Optional<History> getById(Long id) {
+        return repository.findById(id);
     }
 }
