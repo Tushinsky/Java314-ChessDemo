@@ -3,7 +3,6 @@ package com.example.chess_demo_spring_boot.controller;
 import com.example.chess_demo_spring_boot.domain.ChessMan;
 import com.example.chess_demo_spring_boot.domain.Chess_Color;
 import com.example.chess_demo_spring_boot.domain.Game_Application;
-import com.example.chess_demo_spring_boot.dto.Game_ApplicationDto;
 import com.example.chess_demo_spring_boot.service.ChessManService;
 import com.example.chess_demo_spring_boot.service.Game_ApplicationService;
 import lombok.RequiredArgsConstructor;
