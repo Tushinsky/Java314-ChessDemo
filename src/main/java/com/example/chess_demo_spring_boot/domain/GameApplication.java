@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.sql.Time;
 
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,7 +13,7 @@ import java.sql.Time;
 @Entity
 @Table(name = "game_application")
 @Builder
-public class Game_Application {
+public class GameApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,7 +29,7 @@ public class Game_Application {
 
     @Override
     public String toString() {
-        return "Game_Application{" +
+        return "GameApplication{" +
                 "id=" + id +
                 ", color='" + color + '\'' +
                 ", gameTime=" + gameTime +

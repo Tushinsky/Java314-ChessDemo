@@ -1,17 +1,19 @@
 package com.example.chess_demo_spring_boot.controller;
 
 import com.example.chess_demo_spring_boot.domain.ChessMan;
-import com.example.chess_demo_spring_boot.domain.Game_Application;
-import com.example.chess_demo_spring_boot.dto.Game_ApplicationDto;
+import com.example.chess_demo_spring_boot.domain.GameApplication;
+import com.example.chess_demo_spring_boot.dto.GameApplicationDto;
 import com.example.chess_demo_spring_boot.dto.HistoryDto;
 import com.example.chess_demo_spring_boot.service.ChessManService;
-import com.example.chess_demo_spring_boot.service.Game_ApplicationService;
+import com.example.chess_demo_spring_boot.service.GameApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -21,11 +23,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class HomePageController {
     private final ChessManService chessManService;
-    private final Game_ApplicationService gameApplicationService;
+    private final GameApplicationService gameApplicationService;
     private ChessMan chessMan;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @RequestMapping("/home_page/{id}")
+    @RequestMapping("/home/{id}")
     public String getHomePage(@PathVariable("id") String id, Model model) {
 
         // получаем текущего пользователя
@@ -43,24 +45,32 @@ public class HomePageController {
 
             }
 
-            Game_Application game_application = gameApplicationService.getByChessMan(chessMan);
+            GameApplication game_application = gameApplicationService.getByChessMan(chessMan);
             if(game_application != null) {
                 logger.info(game_application.toString());
                 model.addAttribute("gameApp", game_application);
             }
 
 
-            List<Game_ApplicationDto> appList = gameApplicationService.getAllByChessmanIsNot(chessMan);
+            List<GameApplicationDto> appList = gameApplicationService.getAllByChessmanIsNot(chessMan);
             if (appList != null) {
 //                logger.info("appList: size=" + appList.size());
 //                appList.forEach(item -> logger.info(item.getChessMan().toString()));
                 model.addAttribute("appList", appList);
             }
 
-            return "home_page";
+            return "home";
         }
-        return "redirect:/start_page";
+        return "redirect:/start";
     }
 
-
+    /**
+     * Добавляет запись в таблицу приглашений к игре других оппонентов
+     * @param id код записи из таблицы заявок на игру
+     * @return возвращает на домашнюю страницу
+     */
+    @PostMapping("home/challenge/{id}")
+    public String addChallenge(@PathVariable("id") Long id) {
+        return "home";
+    }
 }

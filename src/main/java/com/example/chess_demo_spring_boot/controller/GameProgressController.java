@@ -8,7 +8,6 @@ import com.example.chess_demo_spring_boot.service.HistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,7 +22,7 @@ public class GameProgressController {
     private final HistoryService historyService;
 
     /**
-     * Отрисовка страницы с хадом выбранной шахматной партии
+     * Отрисовка страницы с ходом выбранной шахматной партии
      * @param id код записи из таблицы История
      * @param model модель страницы
      * @return страница с данными

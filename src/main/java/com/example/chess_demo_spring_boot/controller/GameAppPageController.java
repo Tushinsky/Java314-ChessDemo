@@ -1,10 +1,10 @@
 package com.example.chess_demo_spring_boot.controller;
 
 import com.example.chess_demo_spring_boot.domain.ChessMan;
-import com.example.chess_demo_spring_boot.domain.Chess_Color;
-import com.example.chess_demo_spring_boot.domain.Game_Application;
+import com.example.chess_demo_spring_boot.domain.ChessColor;
+import com.example.chess_demo_spring_boot.domain.GameApplication;
 import com.example.chess_demo_spring_boot.service.ChessManService;
-import com.example.chess_demo_spring_boot.service.Game_ApplicationService;
+import com.example.chess_demo_spring_boot.service.GameApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +18,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.sql.Time;
 import java.util.Optional;
 
+/**
+ * Контроллер для отображения страницы регистрации/изменения заявки на участие в игре
+ */
 @Controller
 @RequiredArgsConstructor
 public class GameAppPageController {
-    private final Game_ApplicationService gameApplicationService;
+    private final GameApplicationService gameApplicationService;
     private final ChessManService chessManService;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private Long idChessman;
@@ -39,12 +42,12 @@ public class GameAppPageController {
         Optional<ChessMan> chessManServiceById = chessManService.getBy_Id(idChessman);
         if (chessManServiceById.isPresent()) {
             chessMan = chessManServiceById.get();
-            Game_Application gameApplication = gameApplicationService.getByChessMan(chessMan);
+            GameApplication gameApplication = gameApplicationService.getByChessMan(chessMan);
             if (gameApplication == null) {
-                gameApplication = Game_Application.builder()
+                gameApplication = GameApplication.builder()
                         .id(0L)
                         .chessMan(chessMan)
-                        .color(Chess_Color.WHITE.name())
+                        .color(ChessColor.WHITE.name())
                         .gameTime(Time.valueOf("00:30:00"))
                         .busy(false)
                         .build();
@@ -58,11 +61,11 @@ public class GameAppPageController {
     }
 
     @RequestMapping(value = "/gameApp_page/saveApp", method = RequestMethod.POST)
-    public String saveApp(@ModelAttribute("gameApp") Game_Application game_application) {
-        logger.info("saveApp: время=" + game_application.getGameTime());
-        game_application.setChessMan(chessMan);
-        logger.info("saveApp: " + game_application.toString());
-//        this.gameApplicationService.save(game_application);
+    public String saveApp(@ModelAttribute("gameApp") GameApplication gameApplication) {
+        logger.info("saveApp: время=" + gameApplication.getGameTime());
+        gameApplication.setChessMan(chessMan);
+        logger.info("saveApp: " + gameApplication.toString());
+        this.gameApplicationService.save(gameApplication);
         return "redirect:/home_page/" + String.valueOf(idChessman);
     }
 

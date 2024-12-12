@@ -1,16 +1,17 @@
 package com.example.chess_demo_spring_boot.dto;
 
+import com.example.chess_demo_spring_boot.domain.GameApplication;
 import lombok.*;
 
 import java.sql.Time;
 
 /**
- * DTO for{@link com.example.chess_demo_spring_boot.domain.Game_Application}
+ * DTO for{@link GameApplication}
  */
 @Getter
 @Setter
 @Builder
-public class Game_ApplicationDto {
+public class GameApplicationDto {
     Long id;
     String nic;
     String color;
