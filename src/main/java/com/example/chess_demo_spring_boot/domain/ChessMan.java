@@ -43,12 +43,12 @@ public class ChessMan implements Serializable {
     @Column(name = "state")
     private String state;
 
-    @OneToOne(targetEntity = GameApplication.class)
-    @JoinColumn(name = "id", referencedColumnName = "idchessman")
-    private GameApplication gameApplication;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<History> histories;
+//    @OneToOne(targetEntity = GameApplication.class)
+//    @JoinColumn(name = "id", referencedColumnName = "idchessman")
+//    private GameApplication gameApplication;
+//
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<History> histories;
 
 //    private String activationUUID;
 //    public boolean isAdmin() {

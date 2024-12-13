@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class StartPageController {
 
-    @RequestMapping("/start_page")
+    @RequestMapping("/start")
     public String getStartPage() {
-        return "start_page";
+        return "start";
     }
 }

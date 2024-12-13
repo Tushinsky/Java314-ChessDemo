@@ -25,7 +25,7 @@
                 <td><a href="<@spring.url '/chessman_page'/>">User List</a></td>
             </tr>
             <tr>
-                <td><a href="<@spring.url '/start_page'/>">Back to start page</a></td>
+                <td><a href="<@spring.url '/start'/>">Back to start page</a></td>
             </tr>
         </table>
     </div>

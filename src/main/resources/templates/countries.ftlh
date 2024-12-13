@@ -10,7 +10,7 @@
     <title>Country List</title>
 </head>
 <body>
-<a href="<@spring.url'/admin_page'/>">На главную страницу</a>
+<a href="<@spring.url'/admin'/>">На главную страницу</a>
 <br/>
 <h1>Country list</h1>
   <table>

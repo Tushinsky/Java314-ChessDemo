@@ -24,13 +24,13 @@ public class ChessManController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-    @RequestMapping(value = "chessman_page", method = RequestMethod.GET)
+    @RequestMapping(value = "chessman", method = RequestMethod.GET)
     public String getUserList(Model model) {
         List<ChessMan> chessManList = chessManService.getAll();
         if(chessManList != null) {
             model.addAttribute("chessman", new ChessMan());
             model.addAttribute("chessmanList", chessManService.getAll());
         }
-        return "chessman_page";
+        return "chessman";
     }
 }

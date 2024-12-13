@@ -19,7 +19,7 @@
 <div class="admin_">
     <a href="<@spring.url '/registration'/>">Регистрация</a>
     <a href="<@spring.url '/login'/>">Войти</a>
-    <a href="<@spring.url '/admin_page'/>">Инструменты администратора</a>
+    <a href="<@spring.url '/admin'/>">Инструменты администратора</a>
 </div>
 </body>
 </html>

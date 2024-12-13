@@ -32,7 +32,7 @@ public class RegistrationController {
         if(registrationService.RegisterUser(registrationData)) {
             return "redirect:/login"; // redirect to login page
         } else {
-            return "redirect:/start_page"; // redirect to start page
+            return "redirect:/start"; // redirect to start page
         }
     }
 }

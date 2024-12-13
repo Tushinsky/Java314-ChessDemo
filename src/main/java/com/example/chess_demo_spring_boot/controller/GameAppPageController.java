@@ -35,7 +35,7 @@ public class GameAppPageController {
      * @param model модель страницы
      * @return визуальное представление страницы в браузере
      */
-    @RequestMapping("/gameApp_page/{id}")
+    @RequestMapping("/gameApp/{id}")
     public String changeApplication(@PathVariable("id") String id, Model model) {
         // получаем данные по коду пользователя
         idChessman = Long.valueOf(id);
@@ -57,16 +57,16 @@ public class GameAppPageController {
             model.addAttribute("gameApp", gameApplication);
         }
 
-        return "gameApp_page";
+        return "gameApp";
     }
 
-    @RequestMapping(value = "/gameApp_page/saveApp", method = RequestMethod.POST)
+    @RequestMapping(value = "/gameApp/saveApp", method = RequestMethod.POST)
     public String saveApp(@ModelAttribute("gameApp") GameApplication gameApplication) {
         logger.info("saveApp: время=" + gameApplication.getGameTime());
         gameApplication.setChessMan(chessMan);
         logger.info("saveApp: " + gameApplication.toString());
         this.gameApplicationService.save(gameApplication);
-        return "redirect:/home_page/" + String.valueOf(idChessman);
+        return "redirect:/home/" + String.valueOf(idChessman);
     }
 
 }

@@ -13,7 +13,7 @@
     </style>
 </head>
 <body>
-    <a href="<@spring.url '/admin_page'/>">Back to main page</a>
+    <a href="<@spring.url '/admin'/>">Back to main page</a>
     <br/>
     <h1>User list</h1>
     <table>

@@ -11,7 +11,7 @@
 </head>
 <body>
 <#include "error/error.ftlh">
-<a href="<@spring.url '/admin_page'/>">Back to main page</a>
+<a href="<@spring.url '/admin'/>">Back to main page</a>
 <br/>
 <h1>City list</h1>
   <table>

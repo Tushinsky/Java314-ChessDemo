@@ -6,13 +6,13 @@ import lombok.*;
 import java.util.Date;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 @Table(name = "chess_party")
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class ChessParty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,6 @@ public class ChessParty {
     @Column(name = "partydate")
     private Date partydate;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<History> histories;
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<History> histories;
 }

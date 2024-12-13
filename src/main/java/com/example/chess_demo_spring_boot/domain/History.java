@@ -3,6 +3,8 @@ package com.example.chess_demo_spring_boot.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
+import java.util.List;
 @Getter
 @Setter
 @Entity
@@ -25,7 +27,7 @@ public class History {
     @JoinColumn(name = "idchessman")
     private ChessMan chessMan;
 
-    @OneToOne(targetEntity = ChessParty.class)
+    @OneToOne()
     @JoinColumn(name = "idparty")
     private ChessParty chessParty;
 }

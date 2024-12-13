@@ -46,11 +46,11 @@ public class LoginController {
                 if(authChessMan.getRole().equals(String.valueOf(Role.USER))) {
                     if(authChessMan.getState().equals(String.valueOf(State.ACTIVE)) ||
                             authChessMan.getState().equals(String.valueOf(State.INACTIVE))) {
-                        return "redirect:/home_page/" + authChessMan.getId();
+                        return "redirect:/home/" + authChessMan.getId();
                     }
                 } else {
                     //перенаправляем на домашнюю страницу администратора
-                    return "redirect:/admin_page";
+                    return "redirect:/admin";
                 }
             } else {
                 model.addAttribute("errorMessage", "Неверный пароль!");

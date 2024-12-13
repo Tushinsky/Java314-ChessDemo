@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminController {
 
 
-    @GetMapping(value = "/admin_page")
+    @GetMapping(value = "/admin")
     public String getAdminPage() {
-        return "admin_page";
+        return "admin";
     }
 
 
     @RequestMapping(value = "/cities")
-    public String getCityPage() {
+    public String getItemPage() {
         return "redirect:/cities";
     }
 
@@ -26,9 +26,9 @@ public class AdminController {
         return "redirect:/countries";
     }
 
-    @RequestMapping(value = "/chessman_page")
+    @RequestMapping(value = "/chessman")
     public String getChessmanPage() {
-        return "redirect:/chessman_page";
+        return "redirect:/chessman";
     }
 
 }

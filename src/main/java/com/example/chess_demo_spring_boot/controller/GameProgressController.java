@@ -27,7 +27,7 @@ public class GameProgressController {
      * @param model модель страницы
      * @return страница с данными
      */
-    @RequestMapping("/progress_page/{id}")
+    @RequestMapping(value="/progress/{id}")
     public String getProgress(@PathVariable("id") String id, Model model) {
         Long idHistory = Long.valueOf(id);
         Optional<History> optionalHistory = historyService.getById(idHistory);
@@ -45,6 +45,6 @@ public class GameProgressController {
             model.addAttribute("partyDate", history.getChessParty().getPartydate());
             model.addAttribute("progressList", dtos);
         }
-        return "progress_page";
+        return "progress";
     }
 }

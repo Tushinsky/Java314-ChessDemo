@@ -31,7 +31,7 @@
                                 <td>${history.opponent}</td>
                                 <td>${history.partyDate}</td>
                                 <td>${history.result}</td>
-                                <td><a href="<@spring.url '/progress_page/${history.id}'/>"
+                                <td><a href="<@spring.url '/progress/${history.id}'/>"
                                 target="_blank">Посмотреть</a></td>
                             </tr>
                         </#list>
@@ -46,9 +46,9 @@
     <section class="two_">
         <p>
             <#if !gameApp??>
-                <a href="<@spring.url '/gameApp_page/${chessman.id}'/>">Подать заявку</a>
+                <a href="<@spring.url '/gameApp/${chessman.id}'/>">Подать заявку</a>
             <#else>
-                <a href="<@spring.url '/gameApp_page/${chessman.id}'/>">Посмотреть заявку</a>
+                <a href="<@spring.url '/gameApp/${chessman.id}'/>">Посмотреть заявку</a>
             </#if>
         </p>
         <br />
@@ -71,7 +71,7 @@
                                 <td>${app.gameTime}</td>
                                 <td>${app.nic}</td>
                                 <td>${app.busy?string('yes','no')}</td>
-                                <td><a href="<@spring.url 'home_page/challenge/${app.id}'/>">Вызвать</a></td>
+                                <td><a href="<@spring.url '/challenge/${app.id}'/>">Вызвать</a></td>
                             </tr>
                         </#list>
 
