@@ -1,11 +1,10 @@
 package com.example.chess_demo_spring_boot.controller;
 
+import com.example.chess_demo_spring_boot.dto.RegistrationDto;
 import com.example.chess_demo_spring_boot.service.CityService;
 import com.example.chess_demo_spring_boot.service.CountryService;
 import com.example.chess_demo_spring_boot.service.RegistrationService;
-import com.example.chess_demo_spring_boot.dto.RegistrationDto;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.service.spi.InjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;

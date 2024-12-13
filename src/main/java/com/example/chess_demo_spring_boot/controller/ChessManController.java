@@ -1,7 +1,6 @@
 package com.example.chess_demo_spring_boot.controller;
 
 import com.example.chess_demo_spring_boot.domain.ChessMan;
-import com.example.chess_demo_spring_boot.dto.ChessManDto;
 import com.example.chess_demo_spring_boot.service.ChessManService;
 import com.example.chess_demo_spring_boot.service.CityService;
 import com.example.chess_demo_spring_boot.service.CountryService;

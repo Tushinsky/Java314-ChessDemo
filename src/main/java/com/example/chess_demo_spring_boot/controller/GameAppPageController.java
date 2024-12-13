@@ -64,9 +64,9 @@ public class GameAppPageController {
     public String saveApp(@ModelAttribute("gameApp") GameApplication gameApplication) {
         logger.info("saveApp: время=" + gameApplication.getGameTime());
         gameApplication.setChessMan(chessMan);
-        logger.info("saveApp: " + gameApplication.toString());
+        logger.info("saveApp: " + gameApplication);
         this.gameApplicationService.save(gameApplication);
-        return "redirect:/home/" + String.valueOf(idChessman);
+        return "redirect:/home/" + idChessman;
     }
 
 }

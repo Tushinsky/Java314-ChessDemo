@@ -2,9 +2,6 @@ package com.example.chess_demo_spring_boot.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Date;
-import java.util.List;
 @Getter
 @Setter
 @Entity
