@@ -44,26 +44,26 @@ public class GameApplicationServiceImpl implements GameApplicationService {
         return gameApplicationRepository.findAll();
     }
 
-    @Override
-    @Transactional
-    public List<GameApplicationDto> getAllByChessmanIsNot(ChessMan chessMan) {
-        List<GameApplication> applicationList = gameApplicationRepository.findAll();
-        logger.info("applicationList size=" + applicationList.size());
-        List<GameApplicationDto> applicationDtos = new ArrayList<>();
-        if(!applicationList.isEmpty()) {
-            applicationList.stream().filter(item -> !item.getChessMan().equals(chessMan)).forEach(item -> {
-                GameApplicationDto dto = GameApplicationDto.builder().id(item.getId())
-                        .nic(item.getChessMan().getNic())
-                        .color(item.getColor())
-                        .gameTime(item.getGameTime())
-                        .busy(item.isBusy())
-                                .build();
-                applicationDtos.add(dto);
-            });
-            return applicationDtos;
-        }
-        return null;
-    }
+//    @Override
+//    @Transactional
+//    public List<GameApplicationDto> getAllByChessmanIsNot(ChessMan chessMan) {
+//        List<GameApplication> applicationList = gameApplicationRepository.findAll();
+//        logger.info("applicationList size=" + applicationList.size());
+//        List<GameApplicationDto> applicationDtos = new ArrayList<>();
+//        if(!applicationList.isEmpty()) {
+//            applicationList.stream().filter(item -> !item.getChessMan().equals(chessMan)).forEach(item -> {
+//                GameApplicationDto dto = GameApplicationDto.builder().id(item.getId())
+//                        .nic(item.getChessMan().getNic())
+//                        .color(item.getColor())
+//                        .gameTime(item.getGameTime())
+//                        .busy(item.isBusy())
+//                                .build();
+//                applicationDtos.add(dto);
+//            });
+//            return applicationDtos;
+//        }
+//        return null;
+//    }
 
     @Override
     @Transactional
@@ -82,4 +82,16 @@ public class GameApplicationServiceImpl implements GameApplicationService {
     public void save(GameApplication gameApplication) {
         gameApplicationRepository.save(gameApplication);
     }
+
+    @Override
+    @Transactional
+    public List<GameApplication> getAllByChessmanIsNot(ChessMan chessMan) {
+        List<GameApplication> applicationList = gameApplicationRepository.findAll();
+        logger.info("applicationList size=" + applicationList.size());
+        if(!applicationList.isEmpty()) {
+            return applicationList.stream().filter(item -> !item.getChessMan().equals(chessMan)).toList();
+        }
+        return null;
+    }
+
 }

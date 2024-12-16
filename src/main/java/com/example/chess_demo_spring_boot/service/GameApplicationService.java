@@ -13,8 +13,9 @@ public interface GameApplicationService {
     List<GameApplication> getAllByGameTime(Time time);
     List<GameApplication> getAllByBusy(boolean busy);
     List<GameApplication> getAll();
-    List<GameApplicationDto> getAllByChessmanIsNot(ChessMan chessMan);
+//    List<GameApplicationDto> getAllByChessmanIsNot(ChessMan chessMan);
     GameApplication getByChessMan(ChessMan chessMan);
     GameApplication getById(Long id);
     void save(GameApplication gameApplication);
+    List<GameApplication> getAllByChessmanIsNot(ChessMan chessMan);
 }

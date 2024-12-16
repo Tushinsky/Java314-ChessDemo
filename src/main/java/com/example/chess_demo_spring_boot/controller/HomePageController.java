@@ -3,6 +3,7 @@ package com.example.chess_demo_spring_boot.controller;
 import com.example.chess_demo_spring_boot.domain.Challenge;
 import com.example.chess_demo_spring_boot.domain.ChessMan;
 import com.example.chess_demo_spring_boot.domain.GameApplication;
+import com.example.chess_demo_spring_boot.dto.ChallengeDto;
 import com.example.chess_demo_spring_boot.dto.GameApplicationDto;
 import com.example.chess_demo_spring_boot.dto.HistoryDto;
 import com.example.chess_demo_spring_boot.service.ChallengeService;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,13 +49,46 @@ public class HomePageController {
             // список пользователей, зарегистрированных для участия в играх
             setApplications(model);
 
-            // список пользователей, которым отправлены приглашения для участия в игре
-            setOpponentsWhoChallenge(model);
             // список пользователей, которые отправили приглашения для участия в игре
+            setOpponentsWhoChallenge(model);
+            // список пользователей, которым отправлены приглашения для участия в игре
             setOpponentsWhomChallenge(model);
             return "home";
         }
         return "redirect:/start";
+    }
+
+    private void setHistory(Model model) {
+        // список сыгранных партий текущего пользователя
+        List<HistoryDto> historyList = chessManService.getAllHistoryByChessMan(chessMan);
+        logger.info("historyList: size=" + historyList.size());
+
+        model.addAttribute("chessman", chessMan);
+        if (historyList.size() > 0) {
+            model.addAttribute("historyList", historyList);
+
+        }
+    }
+
+    private void setApplications(Model model) {
+        // список пользователей, подавших заявки для участия в играх (исключая текущего)
+        List<GameApplication> appList = gameApplicationService.getAllByChessmanIsNot(chessMan);
+        if (appList != null) {
+            List<GameApplicationDto> applicationDtos = new ArrayList<>();
+            if(!appList.isEmpty()) {
+                appList.forEach(item -> {
+                    GameApplicationDto dto = GameApplicationDto.builder().id(item.getId())
+                            .nic(item.getChessMan().getNic())
+                            .color(item.getColor())
+                            .gameTime(item.getGameTime())
+                            .busy(item.isBusy())
+                            .build();
+                    applicationDtos.add(dto);
+                });
+
+                model.addAttribute("appList", applicationDtos);
+            }
+        }
     }
 
     /**
@@ -61,8 +96,8 @@ public class HomePageController {
      * @param model модель страницы
      */
     private void setOpponentsWhomChallenge(Model model) {
-        List<Challenge> challenges = challengeService.getAllByChessMan(chessMan);
-        model.addAttribute("whomChallenge", challenges);
+        List<ChallengeDto> challengesWhom = challengeService.getAllByChessMan(chessMan);
+        model.addAttribute("whomChallenge", challengesWhom);
     }
 
     /**
@@ -70,8 +105,8 @@ public class HomePageController {
      * @param model модель страницы
      */
     private void setOpponentsWhoChallenge(Model model) {
-        List<Challenge> challenges = challengeService.findAllByOpponent(chessMan);
-        model.addAttribute("whoChallenge", challenges);
+        List<ChallengeDto> challengesWho = challengeService.getAllByOpponent(chessMan);
+        model.addAttribute("whoChallenge", challengesWho);
     }
 
     /**
@@ -93,23 +128,5 @@ public class HomePageController {
         return "redirect:/home/" + chessMan.getId();
     }
 
-    private void setHistory(Model model) {
-        // список сыгранных партий текущего пользователя
-        List<HistoryDto> historyList = chessManService.getAllHistoryByChessMan(chessMan);
-        logger.info("historyList: size=" + historyList.size());
 
-        model.addAttribute("chessman", chessMan);
-        if (historyList.size() > 0) {
-            model.addAttribute("historyList", historyList);
-
-        }
-    }
-
-    private void setApplications(Model model) {
-        // список пользователей, подавших заявки для участия в играх (исключая текущего)
-        List<GameApplicationDto> appList = gameApplicationService.getAllByChessmanIsNot(chessMan);
-        if (appList != null) {
-            model.addAttribute("appList", appList);
-        }
-    }
 }

@@ -1,11 +1,27 @@
+section {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    align-items: center;
+    align-content: center;
+    padding: 20px;
+
+}
+
 .admin_ {
     display: flex;
     flex-direction: column;
     row-gap: 15px;
-    padding-left: 20px;
+    padding: 20px;
+    background-color: rgb(219, 207, 92);
+    width: 300px;
+    align-items: center;
+    align-content: center;
+    border: solid 1px aquamarine;
+    border-radius: 10px;
 }
 
-.admin_ a{
-    font-size: 18pt;
+.admin_ a {
+    font-size: 20pt;
     text-decoration: none;
 }

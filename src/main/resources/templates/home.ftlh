@@ -58,23 +58,57 @@
             <#if appList??>
                 <table>
                     <tr>
-                        <th width="100">Цвет фигур</th>
-                        <th width="100">Время</th>
                         <th width="200">Ник</th>
+                        <th width="100">Время</th>
+                        <th width="100">Цвет</th>
                         <th width="100">Занят</th>
                         <th width="100">Вызов</th>
                     </tr>
 
                         <#list appList as app>
                             <tr>
-                                <td>${app.color}</td>
-                                <td>${app.gameTime}</td>
                                 <td>${app.nic}</td>
+                                <td>${app.gameTime}</td>
+                                <td>${app.color}</td>
                                 <td>${app.busy?string('yes','no')}</td>
                                 <td><a href="<@spring.url '/challenge/${app.id}'/>">Вызвать</a></td>
                             </tr>
                         </#list>
 
+                </table>
+            </#if>
+                <h3>Приглашают с ними сыграть</h3>
+            <#if whomChallenge??>
+                <table>
+                    <tr>
+                        <th>Ник</th>
+                        <th>Вызов принят</th>
+                        <th>Отменить</th>
+                    </tr>
+                    <#list whomChallenge as whom>
+                        <tr>
+                            <td>${whom.opponentName}</td>
+                            <td>${whom.takeIt?string('yes','no')}</td>
+                            <td><a href="#" >Отменить</a></td>
+                        </tr>
+                    </#list>
+                </table>
+            </#if>
+            <#if whoChallenge??>
+                <h3>Приглашаете сыграть</h3>
+                <table>
+                    <tr>
+                        <th>Ник</th>
+                        <th>Вызов принят</th>
+                        <th>Принять/отказаться</th>
+                    </tr>
+                    <#list whoChallenge as who>
+                        <tr>
+                            <td>${who.chessManName}</td>
+                            <td>${who.takeIt?string('yes','no')}</td>
+                            <td><a href="#">Принять</a>/<a href="#">Отказаться</a></td>
+                        </tr>
+                    </#list>
                 </table>
             </#if>
         </div>

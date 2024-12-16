@@ -17,4 +17,14 @@ public class GameApplicationDto {
     String color;
     Time gameTime;
     boolean busy;
+
+    @Override
+    public String toString() {
+        return "GameApplicationDto{" +
+                "nic='" + nic + '\'' +
+                ", color='" + color + '\'' +
+                ", gameTime=" + gameTime +
+                ", busy=" + busy +
+                '}';
+    }
 }
