@@ -14,12 +14,14 @@
     </style>
 </head>
 <body>
-<h1>Добро пожаловать в клуб любителей шахмат!</h1>
-<br/>
-<div class="admin_">
-    <a href="<@spring.url '/registration'/>">Регистрация</a>
-    <a href="<@spring.url '/login'/>">Войти</a>
-    <!--a href="<@spring.url '/admin'/>">Инструменты администратора</a-->
-</div>
+<section>
+    <h1>Добро пожаловать в клуб любителей шахмат!</h1>
+    <br/>
+    <div class="admin_">
+        <a href="<@spring.url '/registration'/>">Регистрация</a>
+        <a href="<@spring.url '/login'/>">Войти</a>
+        <!--a href="<@spring.url '/admin'/>">Инструменты администратора</a-->
+    </div>
+</section>
 </body>
 </html>

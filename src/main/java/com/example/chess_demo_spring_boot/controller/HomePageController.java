@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -29,7 +30,7 @@ public class HomePageController {
     private final ChallengeService challengeService;
     private ChessMan chessMan;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @RequestMapping("/home/{id}")
+    @GetMapping(value = "/home/{id}")
     public String getHomePage(@PathVariable("id") Long id, Model model) {
 
         // получаем текущего пользователя
@@ -44,15 +45,21 @@ public class HomePageController {
             if(game_application != null) {
                 logger.info(game_application.toString());
                 model.addAttribute("gameApp", game_application);
+                // список пользователей, которые отправили приглашения для участия в игре
+                List<ChallengeDto> challengesWho = challengeService.getAllByOpponent(chessMan);
+                model.addAttribute("whoChallenge", challengesWho);
+//                setOpponentsWhoChallenge(model);
+                // список пользователей, которым отправлены приглашения для участия в игре
+                List<ChallengeDto> challengesWhom = challengeService.getAllByChessMan(chessMan);
+                model.addAttribute("whomChallenge", challengesWhom);
+//                setOpponentsWhomChallenge(model);
+                // список пользователей, зарегистрированных для участия в играх
+                setChessManApplications(model, challengesWho, challengesWhom);
+
+
             }
 
-            // список пользователей, зарегистрированных для участия в играх
-            setApplications(model);
 
-            // список пользователей, которые отправили приглашения для участия в игре
-            setOpponentsWhoChallenge(model);
-            // список пользователей, которым отправлены приглашения для участия в игре
-            setOpponentsWhomChallenge(model);
             return "home";
         }
         return "redirect:/start";
@@ -70,20 +77,28 @@ public class HomePageController {
         }
     }
 
-    private void setApplications(Model model) {
+    private void setChessManApplications(Model model, List<ChallengeDto> challengesWho,
+                                         List<ChallengeDto> challengesWhom) {
         // список пользователей, подавших заявки для участия в играх (исключая текущего)
         List<GameApplication> appList = gameApplicationService.getAllByChessmanIsNot(chessMan);
         if (appList != null) {
             List<GameApplicationDto> applicationDtos = new ArrayList<>();
             if(!appList.isEmpty()) {
                 appList.forEach(item -> {
-                    GameApplicationDto dto = GameApplicationDto.builder().id(item.getId())
-                            .nic(item.getChessMan().getNic())
-                            .color(item.getColor())
-                            .gameTime(item.getGameTime())
-                            .busy(item.isBusy())
-                            .build();
-                    applicationDtos.add(dto);
+                    ChallengeDto dtoWho = challengesWho.stream().filter(who ->
+                                    who.getChessManName().equals(item.getChessMan().getNic())).findFirst().orElse(null);
+                    ChallengeDto dtoWhom = challengesWhom.stream().filter(whom ->
+                            whom.getChessManName().equals(item.getChessMan().getNic())).findFirst().orElse(null);
+                    if (dtoWho != null || dtoWhom != null) {
+                        GameApplicationDto dto = GameApplicationDto.builder().id(item.getId())
+                                .nic(item.getChessMan().getNic())
+                                .color(item.getColor())
+                                .gameTime(item.getGameTime())
+                                .busy(item.isBusy())
+                                .build();
+                        applicationDtos.add(dto);
+                    }
+
                 });
 
                 model.addAttribute("appList", applicationDtos);

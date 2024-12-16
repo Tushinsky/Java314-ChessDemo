@@ -50,7 +50,7 @@ public class LoginController {
                     }
                 } else {
                     //перенаправляем на домашнюю страницу администратора
-                    return "redirect:/admin";
+                    model.addAttribute("errorMessage", "Доступ закрыт! Обратитесь к администратору");
                 }
             } else {
                 model.addAttribute("errorMessage", "Неверный пароль!");
