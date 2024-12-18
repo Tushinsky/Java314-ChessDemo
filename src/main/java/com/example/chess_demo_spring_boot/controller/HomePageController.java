@@ -40,7 +40,10 @@ public class HomePageController {
             // список сыгранных партий
             setHistory(model);
 
-            // заявка текущего пользователя для участия в играх
+            /*
+             Заявка текущего пользователя для участия в играх. Если пользователь не подавал заявку,
+             то список остальных для него недоступен
+             */
             GameApplication game_application = gameApplicationService.getByChessMan(chessMan);
             if(game_application != null) {
                 logger.info(game_application.toString());
@@ -79,7 +82,10 @@ public class HomePageController {
 
     private void setChessManApplications(Model model, List<ChallengeDto> challengesWho,
                                          List<ChallengeDto> challengesWhom) {
-        // список пользователей, подавших заявки для участия в играх (исключая текущего)
+        /*
+         список пользователей, подавших заявки для участия в играх (исключая текущего), за исключением
+         тех, кого пользователь пригласил на игру, и тек, кто пригласил его
+         */
         List<GameApplication> appList = gameApplicationService.getAllByChessmanIsNot(chessMan);
         if (appList != null) {
             List<GameApplicationDto> applicationDtos = new ArrayList<>();

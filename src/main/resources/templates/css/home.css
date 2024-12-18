@@ -1,3 +1,40 @@
+.one_, .two_ {
+    display: block;
+    padding: 15px;
+    width: 50%;
+}
+
+.two_ {
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+}
+
+.history_ {
+    height: fit-content;
+    width: fit-content;
+}
+
+.history_, .opponents-list {
+    display: block;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 5px;
+    max-height: 400px;
+    overflow: auto;
+    background: blanchedalmond;
+}
+
+.two_ .opponent-list {
+    /*display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+    max-height: auto;*/
+    width: 100%;
+}
+/*
 .app_ {
     display: flex;
     flex-direction: column;
@@ -24,23 +61,89 @@
     grid-column: 2;
     text-align: center;
 }
+*/
 
-.history_, .opponents-list {
-    display: block;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid black;
-    border-radius: 3px;
-    padding: 5px;
-    height: fit-content;
-    width: fit-content;
-    max-height: 400px;
-    overflow: auto;
-    background: blanchedalmond;
+.nav-bar {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    height: 20px;
+    width: 100%;
+    /*margin: 0 auto 30px;*/
+    position: fixed;
 }
 
-.one_, .two_ {
+ul {
+    list-style-type: none;
+}
+
+/* свойства основных пунктов меню */
+.menu {
+    background: rgb(188, 199, 199);
+    list-style-type: none;
+    height: 15px;
+}
+
+li {
+    background: rgb(188, 199, 199);
+}
+
+.menu li {
     display: block;
-    padding: 15px;
-    width: 50%;
+    position: relative;
+    width: 100px;
+    float: left;
+    height: auto;
+}
+
+.nav-bar .menu .menuitem1 a,
+.nav-bar .menu .menuitem1 ul li a,
+.nav-bar .menu .menuitem1 ul li ul li a {
+    display: block;
+    /*padding: 0.3em;
+    border-right: 1px solid rgb(117, 81, 151);
+    border-top: 1px solid rgb(117, 81, 151);
+    color: rgb(248, 235, 211);*/
+    text-decoration: none;
+    text-align: center;
+    height: 100%;
+    font-size: 12pt;
+}
+
+.nav-bar .menu .menuitem1 ul li,
+.nav-bar .menu .menuitem1 ul li ul li {
+    /* float: none; */
+    width: 100%;
+    /* clear: both; */
+}
+
+.nav-bar .menu .menuitem1 ul,
+.nav-bar .menu .menuitem1 ul li ul {
+    display: none;
+    position: absolute;
+    width: 100%;
+
+}
+
+.nav-bar .menu .menuitem1 ul {
+    top: 100%;
+    left: 0;
+    padding: 0;
+}
+
+.nav-bar .menu .menuitem1 ul li ul {
+    top: 0;
+    left: 100%;
+}
+
+.nav-bar .menu .menuitem1:hover>ul,
+.nav-bar .menu .menuitem1:focus-within>ul,
+.nav-bar .menu .menuitem1 ul:hover,
+.nav-bar .menu .menuitem1 ul li:hover>ul {
+    display: block;
+}
+
+
+li:hover {
+    background: rgb(188, 148, 226);
 }
