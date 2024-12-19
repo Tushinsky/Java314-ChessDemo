@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -59,5 +60,10 @@ public class ChallengeServiceImpl implements ChallengeService {
     @Override
     public void removeChallenge(Challenge challenge) {
         challengeRepository.delete(challenge);
+    }
+
+    @Override
+    public Optional<Challenge> getBy_Id(Long id) {
+        return challengeRepository.findById(id);
     }
 }

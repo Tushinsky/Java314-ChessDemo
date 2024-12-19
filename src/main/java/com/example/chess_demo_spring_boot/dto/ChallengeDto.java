@@ -12,4 +12,14 @@ public class ChallengeDto {
     private String chessManName;
     private String opponentName;
     private boolean takeIt;
+
+    @Override
+    public String toString() {
+        return "ChallengeDto{" +
+                "id=" + id +
+                ", chessManName='" + chessManName + '\'' +
+                ", opponentName='" + opponentName + '\'' +
+                ", takeIt=" + takeIt +
+                '}';
+    }
 }

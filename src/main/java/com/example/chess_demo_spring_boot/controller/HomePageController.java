@@ -91,11 +91,12 @@ public class HomePageController {
             List<GameApplicationDto> applicationDtos = new ArrayList<>();
             if(!appList.isEmpty()) {
                 appList.forEach(item -> {
+//                    logger.info(item.getChessMan().getNic());
                     ChallengeDto dtoWho = challengesWho.stream().filter(who ->
                                     who.getChessManName().equals(item.getChessMan().getNic())).findFirst().orElse(null);
                     ChallengeDto dtoWhom = challengesWhom.stream().filter(whom ->
-                            whom.getChessManName().equals(item.getChessMan().getNic())).findFirst().orElse(null);
-                    if (dtoWho != null || dtoWhom != null) {
+                            whom.getOpponentName().equals(item.getChessMan().getNic())).findFirst().orElse(null);
+                    if ((dtoWhom == null) && (dtoWho == null)) {
                         GameApplicationDto dto = GameApplicationDto.builder().id(item.getId())
                                 .nic(item.getChessMan().getNic())
                                 .color(item.getColor())
@@ -149,5 +150,26 @@ public class HomePageController {
         return "redirect:/home/" + chessMan.getId();
     }
 
+    /**
+     * Удаляет вызов, сделанный пользователем оппоненту
+     * @param id код записи из базы данных
+     * @return домашнюю страницу с изменениями
+     */
+    @RequestMapping(value = "/cancel/{id}")
+    public String cancelChallenge(@PathVariable("id") Long id) {
+        challengeService.removeChallenge(id);
+        return "redirect:/home/" + chessMan.getId();
+    }
+
+    @RequestMapping(value = "/cancel/{id}&{takeIt}")
+    public String takeChallenge(@PathVariable("id") Long id, @PathVariable("takeIt") boolean takeIt) {
+        Optional<Challenge> serviceBy_id = challengeService.getBy_Id(id);
+        if (serviceBy_id.isPresent()) {
+            Challenge challenge = serviceBy_id.get();
+            challenge.setTakeIt(takeIt);
+            challengeService.saveChallenge(challenge);
+        }
+        return "redirect:/home/" + chessMan.getId();
+    }
 
 }

@@ -63,13 +63,10 @@
 }
 */
 
-.nav-bar {
-    display: flex;
-    flex-direction: row;
-    column-gap: 10px;
-    height: 20px;
+nav {
+    display: block;
     width: 100%;
-    /*margin: 0 auto 30px;*/
+    margin: 0 auto 30px;
     position: fixed;
 }
 
@@ -79,35 +76,35 @@ ul {
 
 /* свойства основных пунктов меню */
 .menu {
-    background: rgb(188, 199, 199);
+    background: cadetblue;
     list-style-type: none;
-    height: 15px;
+    height: 40px;
 }
 
 li {
-    background: rgb(188, 199, 199);
+    background: rgb(163, 91, 231);
 }
 
 .menu li {
     display: block;
     position: relative;
-    width: 100px;
+    width: 150px;
     float: left;
-    height: auto;
+    height: 100%;
 }
 
 .nav-bar .menu .menuitem1 a,
 .nav-bar .menu .menuitem1 ul li a,
 .nav-bar .menu .menuitem1 ul li ul li a {
     display: block;
-    /*padding: 0.3em;
+    padding: 0.3em;
     border-right: 1px solid rgb(117, 81, 151);
     border-top: 1px solid rgb(117, 81, 151);
-    color: rgb(248, 235, 211);*/
+    color: rgb(248, 235, 211);
     text-decoration: none;
     text-align: center;
     height: 100%;
-    font-size: 12pt;
+    font-size: 14pt;
 }
 
 .nav-bar .menu .menuitem1 ul li,
@@ -122,7 +119,7 @@ li {
     display: none;
     position: absolute;
     width: 100%;
-
+    height: auto;
 }
 
 .nav-bar .menu .menuitem1 ul {
@@ -145,5 +142,5 @@ li {
 
 
 li:hover {
-    background: rgb(188, 148, 226);
+    background: rgb(75, 22, 124);
 }
