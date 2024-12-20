@@ -10,10 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Time;
 import java.util.Optional;
@@ -59,9 +56,9 @@ public class GameAppPageController {
 
         return "gameApp";
     }
-
+//@ModelAttribute("gameApp")
     @RequestMapping(value = "/gameApp/saveApp", method = RequestMethod.POST)
-    public String saveApp(@ModelAttribute("gameApp") GameApplication gameApplication) {
+    public String saveApp(@RequestBody @ModelAttribute("gameApp") GameApplication gameApplication) {
         logger.info("saveApp: время=" + gameApplication.getGameTime());
         gameApplication.setChessMan(chessMan);
         logger.info("saveApp: " + gameApplication);

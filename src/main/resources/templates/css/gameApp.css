@@ -1,0 +1,26 @@
+.app_ {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    border: solid 1px blue;
+    background-color: blanchedalmond;
+    padding: 5px 5px;
+    width: fit-content;
+}
+
+.app_ .app_item {
+    display: grid;
+    grid-template-columns: 150px 100px;
+    column-gap: 10px;
+}
+
+.app_ .app_item label{
+    grid-row: 1;
+    grid-column: 1;
+}
+
+.app_ .app_item input {
+    grid-row: 1;
+    grid-column: 2;
+    text-align: center;
+}

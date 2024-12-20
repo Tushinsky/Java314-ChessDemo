@@ -7,7 +7,7 @@
     <title>Заявка на игру</title>
     <style>
         <#include "css/style.css">
-        <#include "css/home.css">
+        <#include "css/gameApp.css">
     </style>
 </head>
 <body>
