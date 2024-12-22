@@ -15,7 +15,7 @@
       <ul class="menu">
           <li class="menuitem1"><a href="#">Оппоненты</a>
               <ul>
-                  <li><a href="#">Перечень</a></li>
+                  <li><a href="<@spring.url '/history'/>">Перечень</a></li>
                   <li><a href="#">Сортировать</a>
                       <ul>
                           <li><a href="#">По времени</a></li>
@@ -28,46 +28,31 @@
                           <li><a href="#">Home Page 3</a></li>
                       </ul>
                   </li>
-                  <li><a href="#">Вы пригласили сыграть</a></li>
-                  <li><a href="#">Вас пригласили сыграть</a></li>
+                  <li><a href="<@spring.url '/whomChallenge'/>">Вы пригласили сыграть</a></li>
+                  <li><a href="<@spring.url '/whoChallenge'/>">Вас пригласили сыграть</a></li>
               </ul>
           </li>
-          <li class="menuitem1"><a href="#">Проведённые партии</a></li>
+          <li class="menuitem1"><a href="<@spring.url '/history'/>">Проведённые партии</a></li>
           <li class="menuitem1"><a href="#">Отложенные партии</a></li>
       </ul>
   </nav>
   <br /><br />
   <header>
-  <h1>Добро пожаловать,${chessman.name}!</h1>
+  <h1>Добро пожаловать, ${chessman.name}!</h1>
   </header>
   <br />
   <section class="one_">
-      <#if historyList??>
-          <h3>Проведённые партии</h3>
+    <#if headerMessage??>
+      <h3>${headerMessage}</h3>
+    </#if>
+      <#if tableData??>
           <div class="history_">
 
               <table>
-                  <tr>
-                      <th width="150">Оппонент</th>
-                      <th width="250">Дата проведения партии</th>
-                      <th width="100">Результат</th>
-                      <th width="100">Ходы</th>
-                  </tr>
 
-                      <#list historyList as history>
-                          <tr>
-                              <td>${history.opponent}</td>
-                              <td>${history.partyDate}</td>
-                              <td>${history.result}</td>
-                              <td><a href="<@spring.url '/progress/${history.id}'/>"
-                              target="_blank">Посмотреть</a></td>
-                          </tr>
-                      </#list>
-
+                  ${tableData}
               </table>
           </div>
-      <#else>
-          <h3>Ещё нет ни одной проведённой партии</h3>
       </#if>
   </section>
   <hr>
@@ -80,21 +65,6 @@
           <#if appList??>
               <div>
                   <h3>Оппоненты</h3>
-                  <!--div class="nav-bar">
-                      <ul class="menu">
-                          <li class="menuitem1"><a href="#">Сортировка</a>
-                              <ul>
-                                  <li><a href="#">Время игры</a></li>
-                                  <li><a href="#">Цвет фигур</a>
-                                      <ul>
-                                          <li><a href="#">BLACK</a></li>
-                                          <li><a href="#">WHITE</a></li>
-                                      </ul>
-                                  </li>
-                              </ul>
-                          </li>
-                      </ul>
-                  </div-->
               </div>
               <div class="opponents-list">
 

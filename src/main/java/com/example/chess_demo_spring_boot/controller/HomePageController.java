@@ -30,6 +30,7 @@ public class HomePageController {
     private final ChallengeService challengeService;
     private ChessMan chessMan;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private GameApplication game_application;
     @GetMapping(value = "/home/{id}")
     public String getHomePage(@PathVariable("id") Long id, Model model) {
 
@@ -37,27 +38,29 @@ public class HomePageController {
         Optional<ChessMan> chessManServiceById = chessManService.getBy_Id(id);
         if(chessManServiceById.isPresent()) {
             chessMan = chessManServiceById.get();
+            model.addAttribute("chessman", chessMan);
+//            model.addAttribute("historyMessage", "");
             // список сыгранных партий
-            setHistory(model);
-
+//            setHistory(model);
+//
             /*
              Заявка текущего пользователя для участия в играх. Если пользователь не подавал заявку,
              то список остальных для него недоступен
              */
-            GameApplication game_application = gameApplicationService.getByChessMan(chessMan);
+            game_application = gameApplicationService.getByChessMan(chessMan);
             if(game_application != null) {
-                logger.info(game_application.toString());
+//                logger.info(game_application.toString());
                 model.addAttribute("gameApp", game_application);
-                // список пользователей, которые отправили приглашения для участия в игре
-                List<ChallengeDto> challengesWho = challengeService.getAllByOpponent(chessMan);
-                model.addAttribute("whoChallenge", challengesWho);
-//                setOpponentsWhoChallenge(model);
-                // список пользователей, которым отправлены приглашения для участия в игре
-                List<ChallengeDto> challengesWhom = challengeService.getAllByChessMan(chessMan);
-                model.addAttribute("whomChallenge", challengesWhom);
-//                setOpponentsWhomChallenge(model);
-                // список пользователей, зарегистрированных для участия в играх
-                setChessManApplications(model, challengesWho, challengesWhom);
+//                // список пользователей, которые отправили приглашения для участия в игре
+//                List<ChallengeDto> challengesWho = challengeService.getAllByOpponent(chessMan);
+//                model.addAttribute("whoChallenge", challengesWho);
+////                setOpponentsWhoChallenge(model);
+//                // список пользователей, которым отправлены приглашения для участия в игре
+//                List<ChallengeDto> challengesWhom = challengeService.getAllByChessMan(chessMan);
+//                model.addAttribute("whomChallenge", challengesWhom);
+////                setOpponentsWhomChallenge(model);
+//                // список пользователей, зарегистрированных для участия в играх
+//                setChessManApplications(model, challengesWho, challengesWhom);
 
 
             }
@@ -68,16 +71,95 @@ public class HomePageController {
         return "redirect:/start";
     }
 
-    private void setHistory(Model model) {
+    @GetMapping(value = "/history")
+    public String getHistory(Model model) {
         // список сыгранных партий текущего пользователя
         List<HistoryDto> historyList = chessManService.getAllHistoryByChessMan(chessMan);
         logger.info("historyList: size=" + historyList.size());
+        String message;
+        StringBuilder tableData = new StringBuilder();
+        String headers = "";
+        if (historyList.size() == 0) {
 
-        model.addAttribute("chessman", chessMan);
-        if (historyList.size() > 0) {
-            model.addAttribute("historyList", historyList);
+            message = "Ещё нет ни одной проведённой партии.";
 
+        } else {
+            // формируем данные для вставки в таблицу
+            message = "Проведённые партии";
+            headers = "<tr><th width='150'>Оппонент</th><th width='250'>Дата проведения партии</th>" +
+                    "<th width='100'>Результат</th><th width='100'>Ходы</th></tr>";
+            // данные
+            for (HistoryDto item : historyList) {
+                tableData.append("<tr>").append("<td>")
+                        .append(item.getOpponent()).append("</td>")
+                        .append("<td>").append(item.getPartyDate()).append("</td>")
+                        .append("<td>").append(item.getResult()).append("</td>")
+                        .append("<td><a href=\"/progress/").append(item.getId()).append("\"")
+                        .append("    target=\"_blank\">Посмотреть</a></td>")
+                        .append("</tr>");
+            }
         }
+        model.addAttribute("chessman", chessMan);
+        model.addAttribute("gameApp", game_application);
+        model.addAttribute("headerMessage", message);
+        model.addAttribute("tableData", (headers + tableData));
+        return "home";
+    }
+
+    @GetMapping(value = "/whomChallenge")
+    public String getWhomChallenge(Model model) {
+        List<ChallengeDto> challengesWhom = challengeService.getAllByChessMan(chessMan);
+        String message;
+        StringBuilder tableData = new StringBuilder();
+        String headers = "";
+//        model.addAttribute("gameApp", game_application);
+        if (challengesWhom.size() == 0) {
+            message = "Вы ещё никого не пригласили сыграть!";
+        } else {
+            message = "Приглашаете сыграть";
+            headers = "<tr>" +
+                    "<th>Ник</th><th>Вызов принят</th><th>Отменить</th>" +
+                    "</tr>";
+            for(ChallengeDto item : challengesWhom) {
+                tableData.append("<tr><td>").append(item.getOpponentName()).append("</td>")
+                        .append("<td>").append(item.isTakeIt()).append("</td>")
+                        .append("<td>").append("<a href=\"/cancel/").append(item.getId()).append(
+                                "\" ").append(">Отменить</a>").append("</td>")
+                        .append("</tr>");
+            }
+        }
+        model.addAttribute("chessman", chessMan);
+        model.addAttribute("headerMessage", message);
+        model.addAttribute("tableData", (headers + tableData));
+        return "home";
+    }
+
+    @GetMapping(value = "/whoChallenge")
+    public String getWhoChallenge(Model model) {
+        List<ChallengeDto> challengesWho = challengeService.getAllByOpponent(chessMan);
+        String message;
+        StringBuilder tableData = new StringBuilder();
+        String headers = "";
+        if(challengesWho.size() == 0) {
+            message = "Вас ещё никто не пригласил сыграть.";
+        } else {
+            message = "Приглашают с ними сыграть";
+            headers = "<tr>" +
+                    "<th>Ник</th>" + "<th>Вызов принят</th>" + "<th>Действие</th>" +
+                    "</tr>";
+            for(ChallengeDto item : challengesWho) {
+                tableData.append("<tr>\n").append("<td>").append(item.getChessManName()).append("</td>\n")
+                        .append("<td>").append(item.isTakeIt() ? "yes" : "no").append("</td>\n")
+                        .append((item.isTakeIt() ? "<td><a href=\"/cancel/" + item.getId() +
+                                "&true\">Отказаться</a></td>\n" : "<td><a href=\"/cancel/" + item.getId() +
+                                "&false\">Принять</a></td>\n"))
+                        .append("</tr>");
+            }
+        }
+        model.addAttribute("chessman", chessMan);
+        model.addAttribute("headerMessage", message);
+        model.addAttribute("tableData", (headers + tableData));
+        return "home";
     }
 
     private void setChessManApplications(Model model, List<ChallengeDto> challengesWho,
@@ -119,7 +201,9 @@ public class HomePageController {
      */
     private void setOpponentsWhomChallenge(Model model) {
         List<ChallengeDto> challengesWhom = challengeService.getAllByChessMan(chessMan);
+        model.addAttribute("chessman", chessMan);
         model.addAttribute("whomChallenge", challengesWhom);
+
     }
 
     /**
@@ -128,6 +212,7 @@ public class HomePageController {
      */
     private void setOpponentsWhoChallenge(Model model) {
         List<ChallengeDto> challengesWho = challengeService.getAllByOpponent(chessMan);
+        model.addAttribute("chessman", chessMan);
         model.addAttribute("whoChallenge", challengesWho);
     }
 
