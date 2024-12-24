@@ -15,7 +15,7 @@
       <ul class="menu">
           <li class="menuitem1"><a href="#">Оппоненты</a>
               <ul>
-                  <li><a href="<@spring.url '/history'/>">Перечень</a></li>
+                  <li><a href="<@spring.url '/list'/>">Показать</a></li>
                   <li><a href="#">Сортировать</a>
                       <ul>
                           <li><a href="#">По времени</a></li>

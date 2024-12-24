@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,9 +151,9 @@ public class HomePageController {
             for(ChallengeDto item : challengesWho) {
                 tableData.append("<tr>\n").append("<td>").append(item.getChessManName()).append("</td>\n")
                         .append("<td>").append(item.isTakeIt() ? "yes" : "no").append("</td>\n")
-                        .append((item.isTakeIt() ? "<td><a href=\"/cancel/" + item.getId() +
-                                "&true\">Отказаться</a></td>\n" : "<td><a href=\"/cancel/" + item.getId() +
-                                "&false\">Принять</a></td>\n"))
+                        .append((item.isTakeIt() ? "<td><a href=\"/take/" + item.getId() +
+                                "&false\">Отказаться</a></td>\n" : "<td><a href=\"/take/" + item.getId() +
+                                "&true\">Принять</a></td>\n"))
                         .append("</tr>");
             }
         }
@@ -243,18 +244,26 @@ public class HomePageController {
     @RequestMapping(value = "/cancel/{id}")
     public String cancelChallenge(@PathVariable("id") Long id) {
         challengeService.removeChallenge(id);
-        return "redirect:/home/" + chessMan.getId();
+        return "redirect/whomChallenge";
     }
 
-    @RequestMapping(value = "/cancel/{id}&{takeIt}")
-    public String takeChallenge(@PathVariable("id") Long id, @PathVariable("takeIt") boolean takeIt) {
+    @RequestMapping(value = "/take/{param}", method = RequestMethod.GET)
+    public String takeChallenge(@PathVariable("param") String param) {
+        String[] parameters = param.split("&");// получаем массив параметров
+        Long id = Long.valueOf(parameters[0]);
+        boolean takeIt = parameters[1].equals("true");
         Optional<Challenge> serviceBy_id = challengeService.getBy_Id(id);
         if (serviceBy_id.isPresent()) {
             Challenge challenge = serviceBy_id.get();
             challenge.setTakeIt(takeIt);
             challengeService.saveChallenge(challenge);
         }
-        return "redirect:/home/" + chessMan.getId();
+        return "redirect:/whoChallenge";
+    }
+
+    @GetMapping(value = "/list")
+    public String getOpponentList(Model model) {
+        return "home";
     }
 
 }
