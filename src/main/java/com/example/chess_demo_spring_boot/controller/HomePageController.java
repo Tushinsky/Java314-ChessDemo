@@ -163,37 +163,59 @@ public class HomePageController {
         return "home";
     }
 
+    /**
+     * Список пользователей, подавших заявки для участия в играх (исключая текущего), за исключением
+     * тех, кого пользователь пригласил на игру, и тек, кто пригласил его
+     * @param model модель страницы
+     * @param challengesWho список пользователей, которые пригласили текущего пользователя
+     * @param challengesWhom список пользователей, которых пригласил текущий пользователь
+     */
     private void setChessManApplications(Model model, List<ChallengeDto> challengesWho,
                                          List<ChallengeDto> challengesWhom) {
-        /*
-         список пользователей, подавших заявки для участия в играх (исключая текущего), за исключением
-         тех, кого пользователь пригласил на игру, и тек, кто пригласил его
-         */
+        String message;
+        StringBuilder tableData = new StringBuilder();
+        String headers = "";
         List<GameApplication> appList = gameApplicationService.getAllByChessmanIsNot(chessMan);
         if (appList != null) {
             List<GameApplicationDto> applicationDtos = new ArrayList<>();
-            if(!appList.isEmpty()) {
-                appList.forEach(item -> {
+            appList.forEach(item -> {
 //                    logger.info(item.getChessMan().getNic());
-                    ChallengeDto dtoWho = challengesWho.stream().filter(who ->
-                                    who.getChessManName().equals(item.getChessMan().getNic())).findFirst().orElse(null);
-                    ChallengeDto dtoWhom = challengesWhom.stream().filter(whom ->
-                            whom.getOpponentName().equals(item.getChessMan().getNic())).findFirst().orElse(null);
-                    if ((dtoWhom == null) && (dtoWho == null)) {
-                        GameApplicationDto dto = GameApplicationDto.builder().id(item.getId())
-                                .nic(item.getChessMan().getNic())
-                                .color(item.getColor())
-                                .gameTime(item.getGameTime())
-                                .busy(item.isBusy())
-                                .build();
-                        applicationDtos.add(dto);
-                    }
+                ChallengeDto dtoWho = challengesWho.stream().filter(who ->
+                                who.getChessManName().equals(item.getChessMan().getNic())).findFirst().orElse(null);
+                ChallengeDto dtoWhom = challengesWhom.stream().filter(whom ->
+                        whom.getOpponentName().equals(item.getChessMan().getNic())).findFirst().orElse(null);
+                if ((dtoWhom == null) && (dtoWho == null)) {
+                    GameApplicationDto dto = GameApplicationDto.builder().id(item.getId())
+                            .nic(item.getChessMan().getNic())
+                            .color(item.getColor())
+                            .gameTime(item.getGameTime())
+                            .busy(item.isBusy())
+                            .build();
+                    applicationDtos.add(dto);
+                }
 
-                });
-
-                model.addAttribute("appList", applicationDtos);
+            });
+            message = "Ваши оппоненты";
+            headers = "<tr>\n" +
+                    "<th width=\"200\">Ник</th>\n" + "<th width=\"100\">Время</th>\n" +
+                    "<th width=\"100\">Цвет</th>\n" + "<th width=\"100\">Занят</th>\n" +
+                    "<th width=\"100\">Вызов</th>\n" + "</tr>";
+            // данные
+            for (GameApplicationDto dto : applicationDtos) {
+                tableData.append("<tr>\n").append("<td>").append(dto.getNic()).append("</td>\n")
+                        .append("<td>").append(dto.getGameTime()).append("</td>\n").
+                        append("<td>").append(dto.getColor()).append("</td>\n")
+                        .append("<td>").append(dto.isBusy() ? "yes" : "no").append("</td>\n")
+                        .append("<td><a href=\"<@spring.url '/challenge/").append(dto.getId()).append("'/>\">Вызвать</a></td>\n")
+                        .append("</tr>");
             }
+        } else {
+            message = "Нет зарегистрированных пользователей!";
         }
+        model.addAttribute("chessman", chessMan);
+        model.addAttribute("headerMessage", message);
+        model.addAttribute("tableData", (headers + tableData));
+
     }
 
     /**
@@ -247,6 +269,11 @@ public class HomePageController {
         return "redirect/whomChallenge";
     }
 
+    /**
+     * Принимает или отменяет приглашение к игре, полученное от оппонента
+     * @param param строка - параметр запроса
+     * @return домашнюю страницу с данными о принятых или отменённых приглашениях
+     */
     @RequestMapping(value = "/take/{param}", method = RequestMethod.GET)
     public String takeChallenge(@PathVariable("param") String param) {
         String[] parameters = param.split("&");// получаем массив параметров
@@ -261,8 +288,16 @@ public class HomePageController {
         return "redirect:/whoChallenge";
     }
 
+    /**
+     * Получает список партнёров по игре и выводит на страницу
+     * @param model модель данных страницы
+     * @return домашнюю страницу с данными
+     */
     @GetMapping(value = "/list")
     public String getOpponentList(Model model) {
+        List<ChallengeDto> challengesWhom = challengeService.getAllByChessMan(chessMan);
+        List<ChallengeDto> challengesWho = challengeService.getAllByOpponent(chessMan);
+        setChessManApplications(model, challengesWho, challengesWhom);
         return "home";
     }
 
