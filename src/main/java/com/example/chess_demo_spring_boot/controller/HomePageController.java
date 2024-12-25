@@ -196,7 +196,7 @@ public class HomePageController {
 
             });
             message = "Ваши оппоненты";
-            headers = "<tr>\n" +
+            headers = "<tr>" +
                     "<th width=\"200\">Ник</th>\n" + "<th width=\"100\">Время</th>\n" +
                     "<th width=\"100\">Цвет</th>\n" + "<th width=\"100\">Занят</th>\n" +
                     "<th width=\"100\">Вызов</th>\n" + "</tr>";
