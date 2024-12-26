@@ -196,17 +196,20 @@ public class HomePageController {
 
             });
             message = "Ваши оппоненты";
-            headers = "<tr>" +
-                    "<th width=\"200\">Ник</th>\n" + "<th width=\"100\">Время</th>\n" +
-                    "<th width=\"100\">Цвет</th>\n" + "<th width=\"100\">Занят</th>\n" +
-                    "<th width=\"100\">Вызов</th>\n" + "</tr>";
+            headers = """
+                    <tr><th width="200">Ник</th>
+                    <th width="100">Время</th>
+                    <th width="100">Цвет</th>
+                    <th width="100">Занят</th>
+                    <th width="100">Вызов</th>
+                    </tr>""";
             // данные
             for (GameApplicationDto dto : applicationDtos) {
                 tableData.append("<tr>\n").append("<td>").append(dto.getNic()).append("</td>\n")
                         .append("<td>").append(dto.getGameTime()).append("</td>\n").
                         append("<td>").append(dto.getColor()).append("</td>\n")
                         .append("<td>").append(dto.isBusy() ? "yes" : "no").append("</td>\n")
-                        .append("<td><a href=\"<@spring.url '/challenge/").append(dto.getId()).append("'/>\">Вызвать</a></td>\n")
+                        .append("<td><a href=\"/challenge/").append(dto.getId()).append("\">Вызвать</a></td>\n")
                         .append("</tr>");
             }
         } else {
@@ -255,7 +258,7 @@ public class HomePageController {
                 .build();
         logger.info(challenge.toString());
         challengeService.saveChallenge(challenge);
-        return "redirect:/home/" + chessMan.getId();
+        return "redirect:/list";
     }
 
     /**
@@ -266,7 +269,7 @@ public class HomePageController {
     @RequestMapping(value = "/cancel/{id}")
     public String cancelChallenge(@PathVariable("id") Long id) {
         challengeService.removeChallenge(id);
-        return "redirect/whomChallenge";
+        return "redirect:/whomChallenge";
     }
 
     /**
