@@ -274,7 +274,7 @@ public class HomePageController {
 
     /**
      * Принимает или отменяет приглашение к игре, полученное от оппонента
-     * @param param строка - параметр запроса
+     * @param param строка, содержащая параметры, разделённые знаком &
      * @return домашнюю страницу с данными о принятых или отменённых приглашениях
      */
     @RequestMapping(value = "/take/{param}", method = RequestMethod.GET)
