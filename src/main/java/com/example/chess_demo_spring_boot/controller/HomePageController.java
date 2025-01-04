@@ -32,6 +32,13 @@ public class HomePageController {
     private ChessMan chessMan;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private GameApplication game_application;
+
+    /**
+     * Выводит домашнюю страницу пользователя
+     * @param id идентификатор пользователя из базы данных
+     * @param model модель страницы
+     * @return домашнюю страницу пользователя с меню
+     */
     @GetMapping(value = "/home/{id}")
     public String getHomePage(@PathVariable("id") Long id, Model model) {
 
@@ -40,31 +47,16 @@ public class HomePageController {
         if(chessManServiceById.isPresent()) {
             chessMan = chessManServiceById.get();
             model.addAttribute("chessman", chessMan);
-//            model.addAttribute("historyMessage", "");
-            // список сыгранных партий
-//            setHistory(model);
-//
             /*
              Заявка текущего пользователя для участия в играх. Если пользователь не подавал заявку,
              то список остальных для него недоступен
              */
             game_application = gameApplicationService.getByChessMan(chessMan);
-            if(game_application != null) {
-//                logger.info(game_application.toString());
+//            if(game_application != null) {
                 model.addAttribute("gameApp", game_application);
-//                // список пользователей, которые отправили приглашения для участия в игре
-//                List<ChallengeDto> challengesWho = challengeService.getAllByOpponent(chessMan);
-//                model.addAttribute("whoChallenge", challengesWho);
-////                setOpponentsWhoChallenge(model);
-//                // список пользователей, которым отправлены приглашения для участия в игре
-//                List<ChallengeDto> challengesWhom = challengeService.getAllByChessMan(chessMan);
-//                model.addAttribute("whomChallenge", challengesWhom);
-////                setOpponentsWhomChallenge(model);
-//                // список пользователей, зарегистрированных для участия в играх
-//                setChessManApplications(model, challengesWho, challengesWhom);
 
 
-            }
+//            }
 
 
             return "home";
@@ -80,7 +72,7 @@ public class HomePageController {
         String message;
         StringBuilder tableData = new StringBuilder();
         String headers = "";
-        if (historyList.size() == 0) {
+        if (historyList.isEmpty()) {
 
             message = "Ещё нет ни одной проведённой партии.";
 
