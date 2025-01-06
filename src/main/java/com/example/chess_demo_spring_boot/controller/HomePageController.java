@@ -111,13 +111,23 @@ public class HomePageController {
         } else {
             message = "Приглашаете сыграть";
             headers = "<tr>" +
-                    "<th>Ник</th><th>Вызов принят</th><th>Отменить</th>" +
+                    "<th>Ник</th><th>Вызов принят</th><th>Действие</th>" +
                     "</tr>";
             for(ChallengeDto item : challengesWhom) {
+                boolean isTakeIt = item.isTakeIt();
+                String takeIt;
+                String linkA;
+                if(isTakeIt) {
+                    takeIt = "да";
+                    linkA = "<a href=\"<@spring.url '/cancel/" + item.getId() + "'/>\" >Отменить</a>" + "/" +
+                        "<a href=\"<@spring.url '/game/${whom.id}'/>\" >Играть</a>";
+                } else {
+                    takeIt = "нет";
+                    linkA = "<a href=\"<@spring.url '/cancel/" + item.getId() + "'/>\" >Отменить</a>";
+                }
                 tableData.append("<tr><td>").append(item.getOpponentName()).append("</td>")
-                        .append("<td>").append(item.isTakeIt()).append("</td>")
-                        .append("<td>").append("<a href=\"/cancel/").append(item.getId()).append(
-                                "\" ").append(">Отменить</a>").append("</td>")
+                        .append("<td>").append(takeIt).append("</td>")
+                        .append("<td>").append(linkA).append("</td>")
                         .append("</tr>");
             }
         }
@@ -266,7 +276,7 @@ public class HomePageController {
 
     /**
      * Принимает или отменяет приглашение к игре, полученное от оппонента
-     * @param param строка, содержащая параметры, разделённые знаком &
+     * @param param строка, содержащая параметры, разделённые знаком '&'
      * @return домашнюю страницу с данными о принятых или отменённых приглашениях
      */
     @RequestMapping(value = "/take/{param}", method = RequestMethod.GET)
@@ -296,4 +306,18 @@ public class HomePageController {
         return "home";
     }
 
+    @GetMapping(value = "/exit")
+    public String exit() {
+        return "redirect:/start";
+    }
+
+    /**
+     * Создаёт игровую партию и пересылает на страницу игры
+     * @param id идентификатор оппонента, с которым создаётся игровая партия
+     * @return страницу с игрой
+     */
+    @GetMapping(value = "/game/{id")
+    public String goToGame(@PathVariable("id") Long id) {
+        return "home";
+    }
 }
