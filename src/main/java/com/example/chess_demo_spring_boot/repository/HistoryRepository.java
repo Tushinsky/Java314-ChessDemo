@@ -14,4 +14,5 @@ public interface HistoryRepository extends JpaRepository<History, Long> {
     History findByChessParty(ChessParty chessParty);
     List<History> findAllByChessMan(ChessMan chessMan);
     Optional<History> findById(Long id);
+    List<History> findAllByChessParty(List<ChessParty> parties);
 }

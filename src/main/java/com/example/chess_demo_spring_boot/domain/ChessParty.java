@@ -20,6 +20,13 @@ public class ChessParty {
     @Column(name = "partydate")
     private Date partydate;
 
-//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private List<History> histories;
+    @ManyToOne()
+    @JoinColumn(name = "idchessman", referencedColumnName = "id")
+    private ChessMan chessMan;
+
+    @JoinColumn(name = "idopponent", referencedColumnName = "id")
+    private ChessMan opponent;
+
+    @Column(name = "finished")
+    private boolean isFinished;
 }

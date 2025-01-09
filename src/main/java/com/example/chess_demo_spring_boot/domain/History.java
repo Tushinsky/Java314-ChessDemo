@@ -14,9 +14,6 @@ public class History {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "opponent")
-    private String opponent;
-
     @Column(name = "result")
     private String result;
 

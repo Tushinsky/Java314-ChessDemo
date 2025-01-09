@@ -116,7 +116,7 @@ public class ChessManServiceImpl implements ChessManService {
         for (History history : historyList) {
             HistoryDto historyDto = new HistoryDto();
             historyDto.setId(history.getId());
-            historyDto.setOpponent(history.getOpponent());
+            historyDto.setChessman(history.getChessMan().getNic());
             historyDto.setPartyDate(history.getChessParty().getPartydate().toString());
             historyDto.setResult(history.getResult());
             list.add(historyDto);

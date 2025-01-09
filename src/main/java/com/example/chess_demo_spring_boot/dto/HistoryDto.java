@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class HistoryDto {
     private Long id;
-    private String opponent;
+    private String chessman;
     private String partyDate;
     private String result;
 

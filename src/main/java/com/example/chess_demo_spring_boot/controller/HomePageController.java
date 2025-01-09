@@ -84,7 +84,7 @@ public class HomePageController {
             // данные
             for (HistoryDto item : historyList) {
                 tableData.append("<tr>").append("<td>")
-                        .append(item.getOpponent()).append("</td>")
+                        .append(item.getChessman()).append("</td>")
                         .append("<td>").append(item.getPartyDate()).append("</td>")
                         .append("<td>").append(item.getResult()).append("</td>")
                         .append("<td><a href=\"/progress/").append(item.getId()).append("\"")
