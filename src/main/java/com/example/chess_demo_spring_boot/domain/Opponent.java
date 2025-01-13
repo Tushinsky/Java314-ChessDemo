@@ -2,26 +2,25 @@ package com.example.chess_demo_spring_boot.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 @Getter
 @Setter
-@Entity
-@Table(name = "history")
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "opponent")
 @Builder
-public class History {
+public class Opponent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "result")
-    private String result;
-
-    @ManyToOne()
-    @JoinColumn(name = "idchessman")
+    @ManyToOne
+    @JoinColumn(name = "idchessman", referencedColumnName = "id")
     private ChessMan chessMan;
 
-    @ManyToOne()
-    @JoinColumn(name = "idparty")
+    @ManyToOne
+    @JoinColumn(name = "idparty", referencedColumnName = "id")
     private ChessParty chessParty;
+
 }

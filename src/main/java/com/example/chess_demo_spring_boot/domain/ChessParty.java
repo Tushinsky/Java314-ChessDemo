@@ -24,9 +24,6 @@ public class ChessParty {
     @JoinColumn(name = "idchessman", referencedColumnName = "id")
     private ChessMan chessMan;
 
-    @JoinColumn(name = "idopponent", referencedColumnName = "id")
-    private ChessMan opponent;
-
     @Column(name = "finished")
     private boolean isFinished;
 }
