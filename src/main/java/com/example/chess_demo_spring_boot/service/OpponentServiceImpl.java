@@ -14,12 +14,12 @@ import java.util.Optional;
 public class OpponentServiceImpl implements OpponentService{
     private final OpponentRepository repository;
     @Override
-    public List<Opponent> findAllByChessman(ChessMan chessMan) {
-        return repository.findAllByChessman(chessMan);
+    public List<Opponent> getAllByChessMan(ChessMan chessMan) {
+        return repository.findAllByChessMan(chessMan);
     }
 
     @Override
-    public Optional<Opponent> findByChessParty(ChessParty chessParty) {
+    public Optional<Opponent> getByChessParty(ChessParty chessParty) {
 
         return repository.findByChessParty(chessParty);
     }

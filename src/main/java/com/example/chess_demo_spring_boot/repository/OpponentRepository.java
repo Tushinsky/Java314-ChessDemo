@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OpponentRepository extends JpaRepository<Opponent, Long> {
-    List<Opponent> findAllByChessman(ChessMan chessMan);
+    List<Opponent> findAllByChessMan(ChessMan chessMan);
     Optional<Opponent> findByChessParty(ChessParty chessParty);
 }

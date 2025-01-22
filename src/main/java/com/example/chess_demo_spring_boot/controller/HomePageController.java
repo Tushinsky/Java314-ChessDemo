@@ -316,7 +316,7 @@ public class HomePageController {
      * @param id идентификатор оппонента, с которым создаётся игровая партия
      * @return страницу с игрой
      */
-    @GetMapping(value = "/game/{id")
+    @GetMapping(value = "/game/{id}")
     public String goToGame(@PathVariable("id") Long id) {
         return "home";
     }

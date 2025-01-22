@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OpponentService {
-    List<Opponent> findAllByChessman(ChessMan chessMan);
-    Optional<Opponent> findByChessParty(ChessParty chessParty);
+    List<Opponent> getAllByChessMan(ChessMan chessMan);
+    Optional<Opponent> getByChessParty(ChessParty chessParty);
 }
