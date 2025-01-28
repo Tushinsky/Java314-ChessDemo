@@ -37,7 +37,7 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     @Transactional
     public List<History> getAllByChessMan(ChessMan chessMan) {
-        return repository.findAllByChessMan(chessMan);
+        return null;
     }
 
     @Override

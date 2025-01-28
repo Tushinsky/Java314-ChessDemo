@@ -18,10 +18,6 @@ public class History {
     private String result;
 
     @ManyToOne()
-    @JoinColumn(name = "idchessman")
-    private ChessMan chessMan;
-
-    @ManyToOne()
     @JoinColumn(name = "idparty")
     private ChessParty chessParty;
 }

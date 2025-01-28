@@ -1,9 +1,11 @@
 package com.example.chess_demo_spring_boot.service;
 
 import com.example.chess_demo_spring_boot.domain.ChessMan;
+import com.example.chess_demo_spring_boot.domain.ChessParty;
 import com.example.chess_demo_spring_boot.domain.History;
 import com.example.chess_demo_spring_boot.dto.HistoryDto;
 import com.example.chess_demo_spring_boot.repository.ChessManRepository;
+import com.example.chess_demo_spring_boot.repository.ChessPartyRepository;
 import com.example.chess_demo_spring_boot.repository.HistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class ChessManServiceImpl implements ChessManService {
 
     private final ChessManRepository repository;
     private final HistoryRepository historyRepository;
+    private final ChessPartyRepository partyRepository;
 
     @Override
     @Transactional
@@ -111,12 +114,12 @@ public class ChessManServiceImpl implements ChessManService {
     @Override
     @Transactional
     public List<HistoryDto> getAllHistoryByChessMan(ChessMan chessMan) {
-        List<History> historyList = historyRepository.findAllByChessMan(chessMan);
+        List<ChessParty> partyList = partyRepository.findAllByChessManAndFinished(chessMan, true);
         List<HistoryDto> list = new ArrayList<>();
-        for (History history : historyList) {
+        for (ChessParty party : partyList) {
+            History history = historyRepository.findByChessParty(party);
             HistoryDto historyDto = new HistoryDto();
             historyDto.setId(history.getId());
-            historyDto.setChessman(history.getChessMan().getNic());
             historyDto.setPartyDate(history.getChessParty().getPartydate().toString());
             historyDto.setResult(history.getResult());
             list.add(historyDto);
