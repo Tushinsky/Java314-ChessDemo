@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface ChessPartyRepository extends JpaRepository<ChessParty, Long> {
     List<ChessParty> findAllByChessMan(ChessMan chessMan);
-    List<ChessParty> findAllByChessManAndFinished(ChessMan chessMan, boolean isFinished);
-
+    List<ChessParty> findAllByChessManAndIsFinished(ChessMan chessMan, boolean isFinished);
 }

@@ -33,6 +33,7 @@ public class HomePageController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private GameApplication game_application;
 
+
     /**
      * Выводит домашнюю страницу пользователя
      * @param id идентификатор пользователя из базы данных
@@ -67,7 +68,7 @@ public class HomePageController {
     @GetMapping(value = "/history")
     public String getHistory(Model model) {
         // список сыгранных партий текущего пользователя
-        List<HistoryDto> historyList = chessManService.getAllHistoryByChessMan(chessMan);
+        List<HistoryDto> historyList = chessManService.getAllHistoryByChessMan(chessMan, true);
         logger.info("historyList: size=" + historyList.size());
         String message;
         StringBuilder tableData = new StringBuilder();
@@ -84,7 +85,7 @@ public class HomePageController {
             // данные
             for (HistoryDto item : historyList) {
                 tableData.append("<tr>").append("<td>")
-                        .append(item.getChessman()).append("</td>")
+                        .append(item.getOpponent()).append("</td>")
                         .append("<td>").append(item.getPartyDate()).append("</td>")
                         .append("<td>").append(item.getResult()).append("</td>")
                         .append("<td><a href=\"/progress/").append(item.getId()).append("\"")
@@ -318,6 +319,46 @@ public class HomePageController {
      */
     @GetMapping(value = "/game/{id}")
     public String goToGame(@PathVariable("id") Long id) {
+        return "home";
+    }
+
+    /**
+     * Отображает на странице информацию по отложенным партиям
+     * @param model модель страницы
+     * @return таблицу с информацией по отложенным партиям
+     */
+    @GetMapping(value = "/put_aside")
+    public String putAsideParty(Model model) {
+        // список сыгранных партий текущего пользователя
+        List<HistoryDto> historyList = chessManService.getAllHistoryByChessMan(chessMan, false);
+        logger.info("historyList: size=" + historyList.size());
+        String message;
+        StringBuilder tableData = new StringBuilder();
+        String headers = "";
+        if (historyList.isEmpty()) {
+
+            message = "Ещё нет ни одной начатой партии.";
+
+        } else {
+            // формируем данные для вставки в таблицу
+            message = "Отложенные партии";
+            headers = "<tr><th width='150'>Оппонент</th><th width='250'>Дата начала партии</th>" +
+                    "<th width='100'>Результат</th><th width='100'>Ходы</th></tr>";
+            // данные
+            for (HistoryDto item : historyList) {
+                tableData.append("<tr>").append("<td>")
+                        .append(item.getOpponent()).append("</td>")
+                        .append("<td>").append(item.getPartyDate()).append("</td>")
+                        .append("<td>").append(item.getResult()).append("</td>")
+                        .append("<td><a href=\"/progress/").append(item.getId()).append("\"")
+                        .append("    target=\"_blank\">Посмотреть</a></td>")
+                        .append("</tr>");
+            }
+        }
+        model.addAttribute("chessman", chessMan);
+        model.addAttribute("gameApp", game_application);
+        model.addAttribute("headerMessage", message);
+        model.addAttribute("tableData", (headers + tableData));
         return "home";
     }
 }

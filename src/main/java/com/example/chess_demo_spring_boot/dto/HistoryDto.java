@@ -7,5 +7,5 @@ public class HistoryDto {
     private Long id;
     private String partyDate;
     private String result;
-
+    private String opponent;
 }

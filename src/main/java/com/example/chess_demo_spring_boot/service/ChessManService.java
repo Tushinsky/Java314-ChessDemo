@@ -23,5 +23,5 @@ public interface ChessManService {
 
     List<ChessMan> getAll();
 
-    List<HistoryDto> getAllHistoryByChessMan(ChessMan chessMan);
+    List<HistoryDto> getAllHistoryByChessMan(ChessMan chessMan, boolean isFinished);
 }

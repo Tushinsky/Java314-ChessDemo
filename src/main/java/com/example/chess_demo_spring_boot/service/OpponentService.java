@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface OpponentService {
     List<Opponent> getAllByChessMan(ChessMan chessMan);
-    Optional<Opponent> getByChessParty(ChessParty chessParty);
+    Opponent getByChessParty(ChessParty chessParty);
 }

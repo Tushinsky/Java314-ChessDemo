@@ -33,7 +33,7 @@
               </ul>
           </li>
           <li class="menuitem1"><a href="<@spring.url '/history'/>">Проведённые партии</a></li>
-          <li class="menuitem1"><a href="#">Отложенные партии</a></li>
+          <li class="menuitem1"><a href="<@spring.url '/put_aside'/>">Отложенные партии</a></li>
           <li class="menuitem1"><a href="<@spring.url '/exit'/>">Выход</a></li>
       </ul>
   </nav>

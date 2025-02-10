@@ -19,7 +19,8 @@ public class ChessPartyServiceImpl implements ChessPartyService{
     }
 
     @Override
-    public List<ChessParty> findAllByChessManAndFinished(ChessMan chessMan, boolean isFinished) {
-        return repository.findAllByChessManAndFinished(chessMan, isFinished);
+    public List<ChessParty> getAllByChessManAndIsFinished(ChessMan chessMan, boolean isFinished) {
+        return repository.findAllByChessManAndIsFinished(chessMan, isFinished);
     }
+
 }

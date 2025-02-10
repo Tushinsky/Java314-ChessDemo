@@ -3,6 +3,7 @@ package com.example.chess_demo_spring_boot.service;
 import com.example.chess_demo_spring_boot.domain.ChessMan;
 import com.example.chess_demo_spring_boot.domain.ChessParty;
 import com.example.chess_demo_spring_boot.domain.History;
+import com.example.chess_demo_spring_boot.domain.Opponent;
 import com.example.chess_demo_spring_boot.dto.HistoryDto;
 import com.example.chess_demo_spring_boot.repository.ChessManRepository;
 import com.example.chess_demo_spring_boot.repository.ChessPartyRepository;
@@ -22,6 +23,7 @@ public class ChessManServiceImpl implements ChessManService {
     private final ChessManRepository repository;
     private final HistoryRepository historyRepository;
     private final ChessPartyRepository partyRepository;
+    private final OpponentService opponentService;
 
     @Override
     @Transactional
@@ -113,14 +115,16 @@ public class ChessManServiceImpl implements ChessManService {
 
     @Override
     @Transactional
-    public List<HistoryDto> getAllHistoryByChessMan(ChessMan chessMan) {
-        List<ChessParty> partyList = partyRepository.findAllByChessManAndFinished(chessMan, true);
+    public List<HistoryDto> getAllHistoryByChessMan(ChessMan chessMan, boolean isFinished) {
+        List<ChessParty> partyList = partyRepository.findAllByChessManAndIsFinished(chessMan, isFinished);
         List<HistoryDto> list = new ArrayList<>();
         for (ChessParty party : partyList) {
             History history = historyRepository.findByChessParty(party);
+            Opponent opponent = opponentService.getByChessParty(party);
             HistoryDto historyDto = new HistoryDto();
             historyDto.setId(history.getId());
             historyDto.setPartyDate(history.getChessParty().getPartydate().toString());
+            historyDto.setOpponent(opponent.getChessMan().getNic());
             historyDto.setResult(history.getResult());
             list.add(historyDto);
         }

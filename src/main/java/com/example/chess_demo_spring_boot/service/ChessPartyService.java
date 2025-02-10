@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ChessPartyService {
     List<ChessParty> getAllByChessMan(ChessMan chessMan);
-    List<ChessParty> findAllByChessManAndFinished(ChessMan chessMan, boolean isFinished);
+    List<ChessParty> getAllByChessManAndIsFinished(ChessMan chessMan, boolean isFinished);
 }

@@ -19,8 +19,10 @@ public class OpponentServiceImpl implements OpponentService{
     }
 
     @Override
-    public Optional<Opponent> getByChessParty(ChessParty chessParty) {
-
-        return repository.findByChessParty(chessParty);
+    public Opponent getByChessParty(ChessParty chessParty) {
+        if(repository.findByChessParty(chessParty).isPresent()) {
+            return repository.findByChessParty(chessParty).get();
+        }
+        return null;
     }
 }
