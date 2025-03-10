@@ -3,11 +3,14 @@ package com.example.chess_demo_spring_boot.controller;
 import com.example.chess_demo_spring_boot.domain.Challenge;
 import com.example.chess_demo_spring_boot.domain.ChessMan;
 import com.example.chess_demo_spring_boot.domain.GameApplication;
+import com.example.chess_demo_spring_boot.domain.Opponent;
 import com.example.chess_demo_spring_boot.dto.ChallengeDto;
 import com.example.chess_demo_spring_boot.dto.GameApplicationDto;
 import com.example.chess_demo_spring_boot.dto.HistoryDto;
+import com.example.chess_demo_spring_boot.repository.ChessPartyRepository;
 import com.example.chess_demo_spring_boot.service.ChallengeService;
 import com.example.chess_demo_spring_boot.service.ChessManService;
+import com.example.chess_demo_spring_boot.service.ChessPartyService;
 import com.example.chess_demo_spring_boot.service.GameApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -32,7 +35,7 @@ public class HomePageController {
     private ChessMan chessMan;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private GameApplication game_application;
-
+    private final ChessPartyService chessPartyService;
 
     /**
      * Выводит домашнюю страницу пользователя
@@ -120,11 +123,11 @@ public class HomePageController {
                 String linkA;
                 if(isTakeIt) {
                     takeIt = "да";
-                    linkA = "<a href=\"<@spring.url '/cancel/" + item.getId() + "'/>\" >Отменить</a>" + "/" +
-                        "<a href=\"<@spring.url '/game/${whom.id}'/>\" >Играть</a>";
+                    linkA = "<a href=\"/cancel/" + item.getId() + "\">Отменить</a>" + "/" +
+                        "<a href=\"/game/" + item.getId() + "\">Играть</a>";
                 } else {
                     takeIt = "нет";
-                    linkA = "<a href=\"<@spring.url '/cancel/" + item.getId() + "'/>\" >Отменить</a>";
+                    linkA = "<a href=\"/cancel/" + item.getId() + "\">Отменить</a>";
                 }
                 tableData.append("<tr><td>").append(item.getOpponentName()).append("</td>")
                         .append("<td>").append(takeIt).append("</td>")
@@ -319,6 +322,8 @@ public class HomePageController {
      */
     @GetMapping(value = "/game/{id}")
     public String goToGame(@PathVariable("id") Long id) {
+        ChessMan opponent = chessManService.getBy_Id(id).orElseThrow();
+        chessPartyService.addParty(opponent);
         return "home";
     }
 
@@ -343,7 +348,7 @@ public class HomePageController {
             // формируем данные для вставки в таблицу
             message = "Отложенные партии";
             headers = "<tr><th width='150'>Оппонент</th><th width='250'>Дата начала партии</th>" +
-                    "<th width='100'>Результат</th><th width='100'>Ходы</th></tr>";
+                    "<th width='100'>Результат</th><th width='100'>Действие</th></tr>";
             // данные
             for (HistoryDto item : historyList) {
                 tableData.append("<tr>").append("<td>")
@@ -351,7 +356,7 @@ public class HomePageController {
                         .append("<td>").append(item.getPartyDate()).append("</td>")
                         .append("<td>").append(item.getResult()).append("</td>")
                         .append("<td><a href=\"/progress/").append(item.getId()).append("\"")
-                        .append("    target=\"_blank\">Посмотреть</a></td>")
+                        .append("    target=\"_blank\">Продолжить</a></td>")
                         .append("</tr>");
             }
         }

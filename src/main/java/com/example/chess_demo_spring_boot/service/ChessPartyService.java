@@ -8,4 +8,5 @@ import java.util.List;
 public interface ChessPartyService {
     List<ChessParty> getAllByChessMan(ChessMan chessMan);
     List<ChessParty> getAllByChessManAndIsFinished(ChessMan chessMan, boolean isFinished);
+    void addParty(ChessMan chessMan);
 }

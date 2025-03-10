@@ -1,6 +1,7 @@
 package com.example.chess_demo_spring_boot.service;
 
 import com.example.chess_demo_spring_boot.domain.ChessMan;
+import com.example.chess_demo_spring_boot.domain.Opponent;
 import com.example.chess_demo_spring_boot.dto.HistoryDto;
 
 import java.util.List;
@@ -24,4 +25,5 @@ public interface ChessManService {
     List<ChessMan> getAll();
 
     List<HistoryDto> getAllHistoryByChessMan(ChessMan chessMan, boolean isFinished);
+
 }
