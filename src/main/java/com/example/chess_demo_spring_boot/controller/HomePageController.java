@@ -323,7 +323,7 @@ public class HomePageController {
     @GetMapping(value = "/game/{id}")
     public String goToGame(@PathVariable("id") Long id) {
         ChessMan opponent = chessManService.getBy_Id(id).orElseThrow();
-        chessPartyService.addParty(opponent);
+        chessPartyService.addParty(chessMan, opponent);
         return "home";
     }
 

@@ -9,4 +9,5 @@ import java.util.List;
 public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     List<Challenge> findAllByChessMan(ChessMan chessMan);
     List<Challenge> findAllByOpponent(ChessMan opponent);
+    Challenge findByChessManAndOpponent(ChessMan chessMan, ChessMan opponent);
 }

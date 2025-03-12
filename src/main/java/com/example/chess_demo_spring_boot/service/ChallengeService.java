@@ -14,4 +14,5 @@ public interface ChallengeService {
     void removeChallenge(Long id);
     void removeChallenge(Challenge challenge);
     Optional<Challenge> getBy_Id(Long id);
+    Challenge getByChessManAndOpponent(ChessMan chessMan, ChessMan opponent);
 }

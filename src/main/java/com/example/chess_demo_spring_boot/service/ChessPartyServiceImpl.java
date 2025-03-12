@@ -32,7 +32,8 @@ public class ChessPartyServiceImpl implements ChessPartyService{
 
     @Override
     @Transactional
-    public void addParty(ChessMan chessMan) {
+    public void addParty(ChessMan chessMan, ChessMan opponent) {
+        // создаём новую партию и сохраняем её в базе
         ChessParty party = ChessParty.builder()
                 .id(0L)
                 .chessMan(chessMan)
@@ -41,12 +42,13 @@ public class ChessPartyServiceImpl implements ChessPartyService{
                 .build();
 
         ChessParty chessParty = repository.save(party);
-        Opponent opponent = Opponent.builder()
+        // после создания новой партии добавляем оппонента по этой партии в таблицу
+        Opponent opponent1 = Opponent.builder()
                 .id(0L)
-                .chessMan(chessMan)
+                .chessMan(opponent)
                 .chessParty(chessParty)
                 .build();
-        opponentRepository.save(opponent);
+        opponentRepository.save(opponent1);
     }
 
 }
