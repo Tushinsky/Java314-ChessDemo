@@ -120,13 +120,16 @@ public class ChessManServiceImpl implements ChessManService {
         List<HistoryDto> list = new ArrayList<>();
         for (ChessParty party : partyList) {
             History history = historyRepository.findByChessParty(party);
-            Opponent opponent = opponentService.getByChessParty(party);
-            HistoryDto historyDto = new HistoryDto();
-            historyDto.setId(history.getId());
-            historyDto.setPartyDate(history.getChessParty().getPartydate().toString());
-            historyDto.setOpponent(opponent.getChessMan().getNic());
-            historyDto.setResult(history.getResult());
-            list.add(historyDto);
+            // проверяем, что шахматная партия была создана и были сделаны ходы
+            if(history != null) {
+                Opponent opponent = opponentService.getByChessParty(party);
+                HistoryDto historyDto = new HistoryDto();
+                historyDto.setId(history.getId());
+                historyDto.setPartyDate(history.getChessParty().getPartydate().toString());
+                historyDto.setOpponent(opponent.getChessMan().getNic());
+                historyDto.setResult(history.getResult());
+                list.add(historyDto);
+            }
         }
 
         return list;
