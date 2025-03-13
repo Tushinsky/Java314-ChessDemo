@@ -1,5 +1,6 @@
 package com.example.chess_demo_spring_boot.service;
 
+import com.example.chess_demo_spring_boot.domain.Challenge;
 import com.example.chess_demo_spring_boot.domain.ChessMan;
 import com.example.chess_demo_spring_boot.domain.ChessParty;
 import com.example.chess_demo_spring_boot.domain.Opponent;
@@ -18,6 +19,7 @@ import java.util.List;
 public class ChessPartyServiceImpl implements ChessPartyService{
     private final ChessPartyRepository repository;
     private final OpponentRepository opponentRepository;
+    private final ChallengeService challengeService;
     @Override
     @Transactional
     public List<ChessParty> getAllByChessMan(ChessMan chessMan) {
@@ -49,6 +51,9 @@ public class ChessPartyServiceImpl implements ChessPartyService{
                 .chessParty(chessParty)
                 .build();
         opponentRepository.save(opponent1);
+        // получаем из базы данных приглашение, сделанное пользователем оппоненту
+        Challenge challenge = challengeService.getByChessManAndOpponent(chessMan, opponent);
+        challengeService.removeChallenge(challenge);// удаляем его, тк партия создана и игра началась
     }
 
 }
