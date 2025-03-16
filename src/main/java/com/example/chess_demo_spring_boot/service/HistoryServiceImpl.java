@@ -41,7 +41,27 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
+    @Transactional
     public Optional<History> getById(Long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public void addHistory(ChessParty party) {
+        History history = History.builder()
+                .id(0L)
+                .chessParty(party)
+                .result("inprogress")
+                .build();
+        repository.save(history);
+    }
+
+    @Override
+    @Transactional
+    public void updateHistory(ChessParty chessParty, String result) {
+        History history = repository.findByChessParty(chessParty);
+        history.setResult(result);
+        repository.save(history);
     }
 }

@@ -20,6 +20,7 @@ public class ChessPartyServiceImpl implements ChessPartyService{
     private final ChessPartyRepository repository;
     private final OpponentRepository opponentRepository;
     private final ChallengeService challengeService;
+    private final HistoryService historyService;
     @Override
     @Transactional
     public List<ChessParty> getAllByChessMan(ChessMan chessMan) {
@@ -54,6 +55,9 @@ public class ChessPartyServiceImpl implements ChessPartyService{
         // получаем из базы данных приглашение, сделанное пользователем оппоненту
         Challenge challenge = challengeService.getByChessManAndOpponent(chessMan, opponent);
         challengeService.removeChallenge(challenge);// удаляем его, тк партия создана и игра началась
+
+        // добавляем созданную партию в историю
+        historyService.addHistory(chessParty);
     }
 
 }

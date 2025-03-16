@@ -13,4 +13,6 @@ public interface HistoryService {
     History getByChessParty(ChessParty chessParty);
     List<History> getAllByChessMan(ChessMan chessMan);
     Optional<History> getById(Long id);
+    void addHistory(ChessParty party);
+    void updateHistory(ChessParty chessParty, String result);
 }

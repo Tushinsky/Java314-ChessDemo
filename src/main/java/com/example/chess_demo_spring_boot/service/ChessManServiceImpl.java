@@ -116,6 +116,7 @@ public class ChessManServiceImpl implements ChessManService {
     @Override
     @Transactional
     public List<HistoryDto> getAllHistoryByChessMan(ChessMan chessMan, boolean isFinished) {
+        // получаем список партий, созданных пользователем
         List<ChessParty> partyList = partyRepository.findAllByChessManAndIsFinished(chessMan, isFinished);
         List<HistoryDto> list = new ArrayList<>();
         for (ChessParty party : partyList) {
@@ -131,7 +132,24 @@ public class ChessManServiceImpl implements ChessManService {
                 list.add(historyDto);
             }
         }
-
+        // получаем список, в котором пользователь выступает как оппонент
+        List<Opponent> opponents = opponentService.getAllByChessMan(chessMan);
+        for(Opponent opponent : opponents) {
+            ChessParty party = opponent.getChessParty();
+            // проверяем соответствие шахматной партии условию
+            if(party.isFinished() == isFinished) {
+                History history = historyRepository.findByChessParty(party);
+                // проверяем, что шахматная партия была создана и были сделаны ходы
+                if (history != null) {
+                    HistoryDto historyDto = new HistoryDto();
+                    historyDto.setId(history.getId());
+                    historyDto.setPartyDate(history.getChessParty().getPartydate().toString());
+                    historyDto.setOpponent(opponent.getChessMan().getNic());
+                    historyDto.setResult(history.getResult());
+                    list.add(historyDto);
+                }
+            }
+        }
         return list;
     }
 
