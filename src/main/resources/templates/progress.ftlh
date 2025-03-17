@@ -19,15 +19,15 @@
                 <th>Оппонент</th>
                 <th>Ходы</th>
             </tr>
+            <#if progressList??>
+                <#list progressList as progress>
+                    <tr>
+                        <td>${progress.chessManName}</td>
+                        <td>${progress.moving}</td>
 
-            <#list progressList as progress>
-            <tr>
-                <td>${progress.chessManName}</td>
-                <td>${progress.moving}</td>
-
-            </tr>
-        </#list>
-
+                    </tr>
+                </#list>
+            </#if>
         </table>
     </div>
 </section>

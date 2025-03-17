@@ -35,13 +35,16 @@ public class GameProgressController {
             History history = optionalHistory.get();
             List<GameProgress> progressList = progressService.getAllByChessParty(history.getChessParty());
             List<GameProgressDto> dtos = new ArrayList<>();
-            progressList.forEach(item -> {
-                GameProgressDto dto = GameProgressDto.builder()
-                        .chessManName(item.getChessMan().getNic())
-                        .moving(item.getMoving())
-                        .build();
-                dtos.add(dto);
-            });
+            // проверяем наличие ходов в шахматной партии
+            if(!progressList.isEmpty()) {
+                progressList.forEach(item -> {
+                    GameProgressDto dto = GameProgressDto.builder()
+                            .chessManName(item.getChessMan().getNic())
+                            .moving(item.getMoving())
+                            .build();
+                    dtos.add(dto);
+                });
+            }
             model.addAttribute("partyDate", history.getChessParty().getPartydate());
             model.addAttribute("progressList", dtos);
         }
