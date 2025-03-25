@@ -27,10 +27,11 @@ public class GameProgressController {
      * @param model модель страницы
      * @return страница с данными
      */
-    @RequestMapping(value="/progress/{id}")
-    public String getProgress(@PathVariable("id") String id, Model model) {
-        Long idHistory = Long.valueOf(id);
-        Optional<History> optionalHistory = historyService.getById(idHistory);
+    @RequestMapping(value="/progress/{historyId:\\d+}/{chessmanId:\\d+}")
+    public String getProgress(@PathVariable("historyId") Long id, @PathVariable ("chessmanId") Long chessmanId,
+                              Model model) {
+//        Long idHistory = Long.valueOf(id);
+        Optional<History> optionalHistory = historyService.getById(id);
         if(optionalHistory.isPresent()) {
             History history = optionalHistory.get();
             List<GameProgress> progressList = progressService.getAllByChessParty(history.getChessParty());

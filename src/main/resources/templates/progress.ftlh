@@ -14,6 +14,10 @@
 <section class="one_">
     <div class="history_">
         <h1>Шахматная партия от ${partyDate}</h1>
+        <div>
+            <label for="name">Ваш ход:</label>
+            <input id="name" type="text" name="name">
+        </div>
         <table>
             <tr>
                 <th>Оппонент</th>

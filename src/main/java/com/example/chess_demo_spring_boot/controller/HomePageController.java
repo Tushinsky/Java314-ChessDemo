@@ -355,7 +355,8 @@ public class HomePageController {
                         .append(item.getOpponent()).append("</td>")
                         .append("<td>").append(item.getPartyDate()).append("</td>")
                         .append("<td>").append(item.getResult()).append("</td>")
-                        .append("<td><a href=\"/progress/").append(item.getId()).append("\"")
+                        .append("<td><a href=\"/progress/").append(item.getId()).append("/")
+                        .append(chessMan.getId()).append("\"")
                         .append("    target=\"_blank\">Продолжить</a></td>")
                         .append("</tr>");
             }
