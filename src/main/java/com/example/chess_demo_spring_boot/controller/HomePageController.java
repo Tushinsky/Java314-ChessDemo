@@ -96,10 +96,7 @@ public class HomePageController {
                         .append("</tr>");
             }
         }
-        model.addAttribute("chessman", chessMan);
-        model.addAttribute("gameApp", game_application);
-        model.addAttribute("headerMessage", message);
-        model.addAttribute("tableData", (headers + tableData));
+        setModelAttribute(model, message,(headers + tableData));
         return "home";
     }
 
@@ -135,9 +132,7 @@ public class HomePageController {
                         .append("</tr>");
             }
         }
-        model.addAttribute("chessman", chessMan);
-        model.addAttribute("headerMessage", message);
-        model.addAttribute("tableData", (headers + tableData));
+        setModelAttribute(model, message,(headers + tableData));
         return "home";
     }
 
@@ -163,9 +158,7 @@ public class HomePageController {
                         .append("</tr>");
             }
         }
-        model.addAttribute("chessman", chessMan);
-        model.addAttribute("headerMessage", message);
-        model.addAttribute("tableData", (headers + tableData));
+        setModelAttribute(model, message,(headers + tableData));
         return "home";
     }
 
@@ -221,9 +214,7 @@ public class HomePageController {
         } else {
             message = "Нет зарегистрированных пользователей!";
         }
-        model.addAttribute("chessman", chessMan);
-        model.addAttribute("headerMessage", message);
-        model.addAttribute("tableData", (headers + tableData));
+        setModelAttribute(model, message,(headers + tableData));
 
     }
 
@@ -234,6 +225,7 @@ public class HomePageController {
     private void setOpponentsWhomChallenge(Model model) {
         List<ChallengeDto> challengesWhom = challengeService.getAllByChessMan(chessMan);
         model.addAttribute("chessman", chessMan);
+        model.addAttribute("gameApp", game_application);
         model.addAttribute("whomChallenge", challengesWhom);
 
     }
@@ -245,6 +237,7 @@ public class HomePageController {
     private void setOpponentsWhoChallenge(Model model) {
         List<ChallengeDto> challengesWho = challengeService.getAllByOpponent(chessMan);
         model.addAttribute("chessman", chessMan);
+        model.addAttribute("gameApp", game_application);
         model.addAttribute("whoChallenge", challengesWho);
     }
 
@@ -253,7 +246,7 @@ public class HomePageController {
      * @param id код записи из таблицы заявок на игру
      * @return возвращает на домашнюю страницу
      */
-    @RequestMapping(value = "/challenge/{id}")
+    @RequestMapping(value = "/challenge/{id}", method = RequestMethod.GET)
     public String addChallenge(@PathVariable("id") Long id) {
         GameApplication game_application = gameApplicationService.getById(id);
         ChessMan opponent = game_application.getChessMan();
@@ -272,7 +265,7 @@ public class HomePageController {
      * @param id код записи из базы данных
      * @return домашнюю страницу с изменениями
      */
-    @RequestMapping(value = "/cancel/{id}")
+    @RequestMapping(value = "/cancel/{id}", method = RequestMethod.GET)
     public String cancelChallenge(@PathVariable("id") Long id) {
         challengeService.removeChallenge(id);
         return "redirect:/whomChallenge";
@@ -361,10 +354,14 @@ public class HomePageController {
                         .append("</tr>");
             }
         }
+        setModelAttribute(model, message,(headers + tableData));
+        return "home";
+    }
+
+    private void setModelAttribute(Model model, String message, String tableData) {
         model.addAttribute("chessman", chessMan);
         model.addAttribute("gameApp", game_application);
         model.addAttribute("headerMessage", message);
-        model.addAttribute("tableData", (headers + tableData));
-        return "home";
+        model.addAttribute("tableData", tableData);
     }
 }

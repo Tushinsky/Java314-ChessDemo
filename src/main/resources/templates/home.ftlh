@@ -8,10 +8,11 @@
   <style>
       <#include "css/style.css">
       <#include "css/home.css">
+      <#include "css/tooltip.css">
   </style>
 </head>
 <body>
-  <nav class="nav-bar">
+    <nav class="nav-bar">
       <ul class="menu">
           <li class="menuitem1"><a href="#">Оппоненты</a>
               <ul>
@@ -36,108 +37,52 @@
           <li class="menuitem1"><a href="<@spring.url '/put_aside'/>">Отложенные партии</a></li>
           <li class="menuitem1"><a href="<@spring.url '/exit'/>">Выход</a></li>
       </ul>
-  </nav>
-  <br /><br />
-  <header>
-  <h1>Добро пожаловать, ${chessman.name}!</h1>
-  </header>
-  <br />
-  <section class="one_">
-    <#if headerMessage??>
-      <h3>${headerMessage}</h3>
-    </#if>
-      <#if tableData??>
-          <div class="history_">
+    </nav>
+    <br /><br />
+    <header>
+        <h1>Добро пожаловать, ${chessman.name}!</h1>
+    </header>
+    <br />
+    <section class="two_">
+        <#if !gameApp??>
+            <h3>Оппоненты: чтобы видеть других Вам необходимо подать заявку на участие в играх.</h3>
+            <a href="<@spring.url '/gameApp/${chessman.id}'/>">Подать заявку</a>
+        <#else>
+            <a href="<@spring.url '/gameApp/${chessman.id}'/>">Посмотреть заявку</a>
+        </#if>
+
+    </section>
+    <br />
+    <section class="one_">
+        <#if headerMessage??>
+            <h3>${headerMessage}</h3>
+        </#if>
+        <#if tableData??>
+            <div class="history_">
 
               <table>
 
                   ${tableData}
               </table>
-          </div>
-      </#if>
-  </section>
-  <hr>
-  <section class="two_">
-      <#if !gameApp??>
-          <h3>Оппоненты: чтобы видеть других Вам необходимо подать заявку на участие в играх.</h3>
-          <a href="<@spring.url '/gameApp/${chessman.id}'/>">Подать заявку</a>
-      <#else>
-          <a href="<@spring.url '/gameApp/${chessman.id}'/>">Посмотреть заявку</a>
-          <#if appList??>
-              <div>
-                  <h3>Оппоненты</h3>
-              </div>
-              <div class="opponents-list">
-
-                  <table>
-                      <tr>
-                          <th width="200">Ник</th>
-                          <th width="100">Время</th>
-                          <th width="100">Цвет</th>
-                          <th width="100">Занят</th>
-                          <th width="100">Вызов</th>
-                      </tr>
-
-                          <#list appList as app>
-                              <tr>
-                                  <td>${app.nic}</td>
-                                  <td>${app.gameTime}</td>
-                                  <td>${app.color}</td>
-                                  <td>${app.busy?string('yes','no')}</td>
-                                  <td><a href="<@spring.url '/challenge/${app.id}'/>">Вызвать</a></td>
-                              </tr>
-                          </#list>
-
-                  </table>
-
-              </div>
-          </#if>
-          <hr>
-          <div class="opponents-list">
-              <#if whomChallenge??>
-                  <h3>Приглашаете сыграть</h3>
-                  <table>
-                      <tr>
-                          <th>Ник</th>
-                          <th>Вызов принят</th>
-                          <th>Отменить</th>
-                      </tr>
-                      <#list whomChallenge as whom>
-                          <tr>
-                              <td>${whom.opponentName}</td>
-                              <td>${whom.takeIt?string('yes','no')}</td>
-                              <td><a href="<@spring.url '/cancel/${whom.id}'/>" >Отменить</a></td>
-                          </tr>
-                      </#list>
-                  </table>
-              </#if>
-          </div>
-          <hr>
-          <div class="opponents-list">
-              <#if whoChallenge??>
-                  <h3>Приглашают с ними сыграть</h3>
-                  <table>
-                      <tr>
-                          <th>Ник</th>
-                          <th>Вызов принят</th>
-                          <th>Действие</th>
-                      </tr>
-                      <#list whoChallenge as who>
-                          <tr>
-                              <td>${who.chessManName}</td>
-                              <td>${who.takeIt?string('yes','no')}</td>
-                              <#if who.takeIt??>
-                                <td><a href="<@spring.url '/cancel/${who.id}&true'/>">Принять</a></td>
-                              <#else>
-                                <td><a href="<@spring.url '/cancel/${who.id}&false'/>">Отказаться</a></td>
-                              </#if>
-                          </tr>
-                      </#list>
-                  </table>
-              </#if>
-          </div>
-      </#if>
-
-  </section>
+            </div>
+        </#if>
+    </section>
+    <hr>
+    <section class="three_">
+        <div class="list_">
+            <div class="list_unit" data-tooltip="it's a user_one">
+                <span>user_one</span>
+            </div>
+            <div class="list_unit" data-tooltip="it's a user_two">
+                <span>user_two</span>
+            </div>
+            <div class="list_unit" data-tooltip="it's a user_three">
+                <span>user_three</span>
+            </div>
+            <div class="list_unit" data-tooltip="it's a user_four">
+                <span>user_four</span>
+            </div>
+        </div>
+    </section>
 </body>
 </html>

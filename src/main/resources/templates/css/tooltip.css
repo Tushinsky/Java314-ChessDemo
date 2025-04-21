@@ -1,0 +1,58 @@
+/* подсказка */
+[data-tooltip],
+[data-tool] {
+    position: relative;
+
+}
+
+[data-tooltip]::after,
+[data-tool]::after {
+    /*абсолютное позиционирование*/
+    position: absolute;
+    /*ширина подсказки*/
+    width: max-content;
+    /*положение подсказки*/
+    left: 0;
+    top: 0;
+    /*цвет фона*/
+    background: lightskyblue;
+    /*поля вокруг текста*/
+    padding: 0.5em;
+    /*параметры тени*/
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+    /*подсказка невидима*/
+    opacity: 0;
+    /*время появления подсказки*/
+    transition: 1s;
+    /*взаимодействие курсора мыши*/
+    pointer-events: none;
+    font-size: 12pt;
+    border-radius: 10px;
+}
+
+
+[data-tooltip]::after {
+    /* выводим текст */
+    content: attr(data-tooltip);
+}
+
+[data-tool]::after {
+    /* выводим текст */
+    content: attr(data-tool);
+}
+
+[data-tooltip]:hover::after {
+    /* подсказка видима */
+    opacity: 1;
+    /*положение подсказки*/
+    top: -2em;
+
+}
+
+[data-tool]:hover::after {
+    /* подсказка видима */
+    opacity: 1;
+    /*положение подсказки*/
+    top: 2em;
+
+}

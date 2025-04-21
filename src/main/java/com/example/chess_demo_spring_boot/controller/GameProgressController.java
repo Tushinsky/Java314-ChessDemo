@@ -6,11 +6,16 @@ import com.example.chess_demo_spring_boot.dto.GameProgressDto;
 import com.example.chess_demo_spring_boot.service.GameProgressService;
 import com.example.chess_demo_spring_boot.service.HistoryService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +25,7 @@ import java.util.Optional;
 public class GameProgressController {
     private final GameProgressService progressService;
     private final HistoryService historyService;
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     /**
      * Отрисовка страницы с ходом выбранной шахматной партии
      * @param id код записи из таблицы История
@@ -48,6 +53,13 @@ public class GameProgressController {
             }
             model.addAttribute("partyDate", history.getChessParty().getPartydate());
             model.addAttribute("progressList", dtos);
+            Timer t= new Timer(1000, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    logger.info("Calling timer");
+                }
+            });
+            t.start();
         }
         return "progress";
     }

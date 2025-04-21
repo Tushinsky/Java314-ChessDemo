@@ -124,11 +124,8 @@ public class ChessManServiceImpl implements ChessManService {
             // проверяем, что шахматная партия была создана и были сделаны ходы
             if(history != null) {
                 Opponent opponent = opponentService.getByChessParty(party);
-                HistoryDto historyDto = new HistoryDto();
-                historyDto.setId(history.getId());
-                historyDto.setPartyDate(history.getChessParty().getPartydate().toString());
+                HistoryDto historyDto = getHistoryDto(history);
                 historyDto.setOpponent(opponent.getChessMan().getNic());
-                historyDto.setResult(history.getResult());
                 list.add(historyDto);
             }
         }
@@ -141,11 +138,8 @@ public class ChessManServiceImpl implements ChessManService {
                 History history = historyRepository.findByChessParty(party);
                 // проверяем, что шахматная партия была создана и были сделаны ходы
                 if (history != null) {
-                    HistoryDto historyDto = new HistoryDto();
-                    historyDto.setId(history.getId());
-                    historyDto.setPartyDate(history.getChessParty().getPartydate().toString());
+                    HistoryDto historyDto = getHistoryDto(history);
                     historyDto.setOpponent(history.getChessParty().getChessMan().getNic());
-                    historyDto.setResult(history.getResult());
                     list.add(historyDto);
                 }
             }
@@ -153,5 +147,11 @@ public class ChessManServiceImpl implements ChessManService {
         return list;
     }
 
-
+    private HistoryDto getHistoryDto(History history) {
+        HistoryDto historyDto = new HistoryDto();
+        historyDto.setId(history.getId());
+        historyDto.setPartyDate(history.getChessParty().getPartydate().toString());
+        historyDto.setResult(history.getResult());
+        return historyDto;
+    }
 }

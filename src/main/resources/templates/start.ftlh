@@ -11,6 +11,7 @@
     <style>
         <#include "css/style.css">
         <#include "css/admin.css">
+        <#include "css/tooltip.css">
     </style>
 </head>
 <body>
@@ -18,8 +19,8 @@
     <h1>Добро пожаловать в клуб любителей шахмат!</h1>
     <br/>
     <div class="admin_">
-        <a href="<@spring.url '/registration'/>">Регистрация</a>
-        <a href="<@spring.url '/login'/>">Войти</a>
+        <a href="<@spring.url '/registration'/>" data-tooltip="нажмите для регистрации">Регистрация</a>
+        <a href="<@spring.url '/login'/>" data-tooltip="нажмите для входа">Войти</a>
         <!--a href="<@spring.url '/admin'/>">Инструменты администратора</a-->
     </div>
 </section>

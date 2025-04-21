@@ -130,3 +130,28 @@ header {
     align-content: center;
 }
 
+.list_ {
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+    /*padding: 10px;*/
+}
+
+.list_unit {
+    border: 1px solid black;/*rgb(117, 81, 151);*/
+    /*параметры тени*/
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+    /*цвет фона*/
+    background: lightcoral;
+    width: 25%;
+    height: 40px;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    font-size: 14pt;
+}
+
+.list_unit span {
+    text-align: justify;
+}
+
