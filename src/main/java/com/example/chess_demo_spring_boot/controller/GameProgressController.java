@@ -1,5 +1,6 @@
 package com.example.chess_demo_spring_boot.controller;
 
+import com.example.chess_demo_spring_boot.client_server.JClient;
 import com.example.chess_demo_spring_boot.domain.GameProgress;
 import com.example.chess_demo_spring_boot.domain.History;
 import com.example.chess_demo_spring_boot.dto.GameProgressDto;
@@ -26,6 +27,7 @@ public class GameProgressController {
     private final GameProgressService progressService;
     private final HistoryService historyService;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final JClient client = new JClient();
     /**
      * Отрисовка страницы с ходом выбранной шахматной партии
      * @param id код записи из таблицы История
@@ -53,13 +55,7 @@ public class GameProgressController {
             }
             model.addAttribute("partyDate", history.getChessParty().getPartydate());
             model.addAttribute("progressList", dtos);
-            Timer t= new Timer(1000, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    logger.info("Calling timer");
-                }
-            });
-            t.start();
+            client.start();
         }
         return "progress";
     }

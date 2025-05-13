@@ -133,22 +133,34 @@ header {
 .list_ {
     display: flex;
     flex-direction: column;
-    row-gap: 30px;
-    /*padding: 10px;*/
+    row-gap: 15px;
+    padding: 10px;
 }
 
 .list_unit {
     border: 1px solid black;/*rgb(117, 81, 151);*/
     /*параметры тени*/
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.7);
     /*цвет фона*/
     background: lightcoral;
-    width: 25%;
+    width: 30%;
     height: 40px;
     border-radius: 10px;
     align-items: center;
     justify-content: center;
     font-size: 14pt;
+    /*поля вокруг текста*/
+    padding: 0.5em;
+    /*время изменения размера*/
+    transition: 0.5s;
+    /*при переполнении текст скрывается*/
+    overflow: hidden;
+}
+
+.list_unit:hover {
+    width: 50%;
+    height: 60px;
+    overflow: visible;
 }
 
 .list_unit span {

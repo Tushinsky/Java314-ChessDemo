@@ -3,11 +3,9 @@ package com.example.chess_demo_spring_boot.controller;
 import com.example.chess_demo_spring_boot.domain.Challenge;
 import com.example.chess_demo_spring_boot.domain.ChessMan;
 import com.example.chess_demo_spring_boot.domain.GameApplication;
-import com.example.chess_demo_spring_boot.domain.Opponent;
 import com.example.chess_demo_spring_boot.dto.ChallengeDto;
 import com.example.chess_demo_spring_boot.dto.GameApplicationDto;
 import com.example.chess_demo_spring_boot.dto.HistoryDto;
-import com.example.chess_demo_spring_boot.repository.ChessPartyRepository;
 import com.example.chess_demo_spring_boot.service.ChallengeService;
 import com.example.chess_demo_spring_boot.service.ChessManService;
 import com.example.chess_demo_spring_boot.service.ChessPartyService;
@@ -105,6 +103,7 @@ public class HomePageController {
         List<ChallengeDto> challengesWhom = challengeService.getAllByChessMan(chessMan);
         String message;
         StringBuilder tableData = new StringBuilder();
+        StringBuilder list_unitData = new StringBuilder();
         String headers = "";
 //        model.addAttribute("gameApp", game_application);
         if (challengesWhom.size() == 0) {
@@ -130,9 +129,14 @@ public class HomePageController {
                         .append("<td>").append(takeIt).append("</td>")
                         .append("<td>").append(linkA).append("</td>")
                         .append("</tr>");
+                list_unitData.append("<div class=\"list_unit\" data-tooltip=\"it's a ")
+                        .append(item.getOpponentName()).append("\">")
+                        .append("<span>").append(item.getOpponentName()).append("</span>")
+                        .append("</div>");
             }
         }
         setModelAttribute(model, message,(headers + tableData));
+        model.addAttribute("list_unitData", list_unitData);
         return "home";
     }
 
@@ -141,6 +145,7 @@ public class HomePageController {
         List<ChallengeDto> challengesWho = challengeService.getAllByOpponent(chessMan);
         String message;
         StringBuilder tableData = new StringBuilder();
+        StringBuilder list_unitData = new StringBuilder();
         String headers = "";
         if(challengesWho.size() == 0) {
             message = "Вас ещё никто не пригласил сыграть.";
@@ -156,9 +161,14 @@ public class HomePageController {
                                 "&false\">Отказаться</a></td>\n" : "<td><a href=\"/take/" + item.getId() +
                                 "&true\">Принять</a></td>\n"))
                         .append("</tr>");
+                list_unitData.append("<div class=\"list_unit\" data-tooltip=\"it's a ")
+                        .append(item.getChessManName()).append("\">")
+                        .append("<span>").append(item.getChessManName()).append("</span>")
+                        .append("</div>");
             }
         }
         setModelAttribute(model, message,(headers + tableData));
+        model.addAttribute("list_unitData", list_unitData);
         return "home";
     }
 
