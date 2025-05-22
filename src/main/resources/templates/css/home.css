@@ -135,16 +135,18 @@ header {
     flex-direction: column;
     row-gap: 15px;
     padding: 10px;
+    width: 100%;
 }
 
 .list_unit {
-    border: 1px solid black;/*rgb(117, 81, 151);*/
+    border: 1px solid rgb(117, 81, 151);
     /*параметры тени*/
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.7);
     /*цвет фона*/
     background: lightcoral;
     width: 30%;
     height: 40px;
+    padding: 0.5em;
     border-radius: 10px;
     align-items: center;
     justify-content: center;
@@ -164,6 +166,9 @@ header {
 }
 
 .list_unit span {
-    text-align: justify;
+    width: 100%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    /*overflow: hidden;*/
 }
-

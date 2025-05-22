@@ -4,36 +4,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Progress</title>
-    <style>
-        <#include "css/style.css">
-        <#include "css/home.css">
+    <style type="text/css">
+        <#include "css/style.css" />
+        <#include "css/home.css" />
     </style>
 </head>
 <body>
-<section class="one_">
-    <div class="history_">
-        <h1>Шахматная партия от ${partyDate}</h1>
-        <div>
-            <label for="name">Ваш ход:</label>
-            <input id="name" type="text" name="name">
-        </div>
-        <table>
-            <tr>
-                <th>Оппонент</th>
-                <th>Ходы</th>
-            </tr>
-            <#if progressList??>
-                <#list progressList as progress>
-                    <tr>
-                        <td>${progress.chessManName}</td>
-                        <td>${progress.moving}</td>
 
+<section class="one_">
+    <#include "error/error.ftlh" />
+        <form class="send" method="post" action="/progress/send">
+            <div class="history_">
+                <h1>Шахматная партия от ${partyDate}</h1>
+                <div>
+                    <label for="moving">Ваш ход:</label>
+                    <input id="moving" type="text" name="moving"/>
+                    <input type="submit" value="Send" />
+                </div>
+                <table>
+                    <tr>
+                        <th>Оппонент</th>
+                        <th>Ходы</th>
                     </tr>
-                </#list>
-            </#if>
-        </table>
-    </div>
+
+                    <#if progressList??>
+                         <#list progressList as progress>
+                             <tr>
+                                 <td>${progress.chessManName}</td>
+                                 <td>${progress.moving}</td>
+                            </tr>
+                         </#list>
+                    </#if>
+                </table>
+            </div>
+        </form>
+
 </section>
 </body>
 </html>

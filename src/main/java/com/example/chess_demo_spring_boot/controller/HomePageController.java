@@ -15,10 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,14 +31,13 @@ public class HomePageController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private GameApplication game_application;
     private final ChessPartyService chessPartyService;
-
     /**
      * Выводит домашнюю страницу пользователя
      * @param id идентификатор пользователя из базы данных
      * @param model модель страницы
      * @return домашнюю страницу пользователя с меню
      */
-    @GetMapping(value = "/home/{id}")
+    @GetMapping(value = "/home/{id:\\d+}")
     public String getHomePage(@PathVariable("id") Long id, Model model) {
 
         // получаем текущего пользователя
@@ -49,16 +45,18 @@ public class HomePageController {
         if(chessManServiceById.isPresent()) {
             chessMan = chessManServiceById.get();
             model.addAttribute("chessman", chessMan);
+//            model.addAttribute("historyMessage", "");
+            // список сыгранных партий
+//            setHistory(model);
+//
             /*
              Заявка текущего пользователя для участия в играх. Если пользователь не подавал заявку,
              то список остальных для него недоступен
              */
             game_application = gameApplicationService.getByChessMan(chessMan);
-//            if(game_application != null) {
+            if(game_application != null) {
                 model.addAttribute("gameApp", game_application);
-
-
-//            }
+            }
 
 
             return "home";
@@ -73,8 +71,9 @@ public class HomePageController {
         logger.info("historyList: size=" + historyList.size());
         String message;
         StringBuilder tableData = new StringBuilder();
-        String headers = "";
-        if (historyList.isEmpty()) {
+        String headers = null;
+        StringBuilder listUnit = new StringBuilder();
+        if (historyList.size() == 0) {
 
             message = "Ещё нет ни одной проведённой партии.";
 
@@ -86,15 +85,18 @@ public class HomePageController {
             // данные
             for (HistoryDto item : historyList) {
                 tableData.append("<tr>").append("<td>")
-                        .append(item.getOpponent()).append("</td>")
                         .append("<td>").append(item.getPartyDate()).append("</td>")
                         .append("<td>").append(item.getResult()).append("</td>")
                         .append("<td><a href=\"/progress/").append(item.getId()).append("\"")
                         .append("    target=\"_blank\">Посмотреть</a></td>")
                         .append("</tr>");
+                listUnit.append("<div class=\"list_unit\" data-tooltip=\"" + item.getResult() + "\">")
+                        .append("<span>" + item.getPartyDate() + ":\n" + item.getOpponent() + "</span>")
+                        .append("</div>");
             }
         }
         setModelAttribute(model, message,(headers + tableData));
+        model.addAttribute("listUnit", listUnit);
         return "home";
     }
 
@@ -104,7 +106,7 @@ public class HomePageController {
         String message;
         StringBuilder tableData = new StringBuilder();
         StringBuilder list_unitData = new StringBuilder();
-        String headers = "";
+        String headers = null;
 //        model.addAttribute("gameApp", game_application);
         if (challengesWhom.size() == 0) {
             message = "Вы ещё никого не пригласили сыграть!";
@@ -120,7 +122,7 @@ public class HomePageController {
                 if(isTakeIt) {
                     takeIt = "да";
                     linkA = "<a href=\"/cancel/" + item.getId() + "\">Отменить</a>" + "/" +
-                        "<a href=\"/game/" + item.getId() + "\">Играть</a>";
+                            "<a href=\"/game/" + item.getId() + "\">Играть</a>";
                 } else {
                     takeIt = "нет";
                     linkA = "<a href=\"/cancel/" + item.getId() + "\">Отменить</a>";
@@ -158,8 +160,8 @@ public class HomePageController {
                 tableData.append("<tr>\n").append("<td>").append(item.getChessManName()).append("</td>\n")
                         .append("<td>").append(item.isTakeIt() ? "yes" : "no").append("</td>\n")
                         .append((item.isTakeIt() ? "<td><a href=\"/take/" + item.getId() +
-                                "&false\">Отказаться</a></td>\n" : "<td><a href=\"/take/" + item.getId() +
-                                "&true\">Принять</a></td>\n"))
+                                "/false\">Отказаться</a></td>\n" : "<td><a href=\"/take/" + item.getId() +
+                                "/true\">Принять</a></td>\n"))
                         .append("</tr>");
                 list_unitData.append("<div class=\"list_unit\" data-tooltip=\"it's a ")
                         .append(item.getChessManName()).append("\">")
@@ -182,15 +184,13 @@ public class HomePageController {
     private void setChessManApplications(Model model, List<ChallengeDto> challengesWho,
                                          List<ChallengeDto> challengesWhom) {
         String message;
-        StringBuilder tableData = new StringBuilder();
-        String headers = "";
+        StringBuilder list_unitData = new StringBuilder();
         List<GameApplication> appList = gameApplicationService.getAllByChessmanIsNot(chessMan);
         if (appList != null) {
             List<GameApplicationDto> applicationDtos = new ArrayList<>();
             appList.forEach(item -> {
-//                    logger.info(item.getChessMan().getNic());
                 ChallengeDto dtoWho = challengesWho.stream().filter(who ->
-                                who.getChessManName().equals(item.getChessMan().getNic())).findFirst().orElse(null);
+                        who.getChessManName().equals(item.getChessMan().getNic())).findFirst().orElse(null);
                 ChallengeDto dtoWhom = challengesWhom.stream().filter(whom ->
                         whom.getOpponentName().equals(item.getChessMan().getNic())).findFirst().orElse(null);
                 if ((dtoWhom == null) && (dtoWho == null)) {
@@ -205,27 +205,26 @@ public class HomePageController {
 
             });
             message = "Ваши оппоненты";
-            headers = """
-                    <tr><th width="200">Ник</th>
-                    <th width="100">Время</th>
-                    <th width="100">Цвет</th>
-                    <th width="100">Занят</th>
-                    <th width="100">Вызов</th>
-                    </tr>""";
             // данные
             for (GameApplicationDto dto : applicationDtos) {
-                tableData.append("<tr>\n").append("<td>").append(dto.getNic()).append("</td>\n")
-                        .append("<td>").append(dto.getGameTime()).append("</td>\n").
-                        append("<td>").append(dto.getColor()).append("</td>\n")
-                        .append("<td>").append(dto.isBusy() ? "yes" : "no").append("</td>\n")
-                        .append("<td><a href=\"/challenge/").append(dto.getId()).append("\">Вызвать</a></td>\n")
-                        .append("</tr>");
+                String busy = dto.isBusy() ? "сейчас занят" : "сейчас свободен";
+                list_unitData.append("<div class=\"list_unit\" data-tooltip=\"")
+                        .append(busy).append("\">")
+                        .append("<span>")
+                        .append(dto.getNic()).append("\t")
+                        .append(dto.getGameTime()).append("\t").append(dto.getColor()).append("\t")
+                        .append("<a href=\"/challenge/").append(dto.getId())
+                        .append("\">Вызвать</a></span>")
+                        .append("</div>");
             }
         } else {
             message = "Нет зарегистрированных пользователей!";
         }
-        setModelAttribute(model, message,(headers + tableData));
-
+        model.addAttribute("chessman", chessMan);
+        model.addAttribute("gameApp", game_application);
+        model.addAttribute("list_unitData", list_unitData);
+        model.addAttribute("headerMessage", message);
+//        setModelAttribute(model, message,(headers + tableData));
     }
 
     /**
@@ -237,7 +236,6 @@ public class HomePageController {
         model.addAttribute("chessman", chessMan);
         model.addAttribute("gameApp", game_application);
         model.addAttribute("whomChallenge", challengesWhom);
-
     }
 
     /**
@@ -247,8 +245,8 @@ public class HomePageController {
     private void setOpponentsWhoChallenge(Model model) {
         List<ChallengeDto> challengesWho = challengeService.getAllByOpponent(chessMan);
         model.addAttribute("chessman", chessMan);
-        model.addAttribute("gameApp", game_application);
         model.addAttribute("whoChallenge", challengesWho);
+        model.addAttribute("gameApp", game_application);
     }
 
     /**
@@ -256,7 +254,7 @@ public class HomePageController {
      * @param id код записи из таблицы заявок на игру
      * @return возвращает на домашнюю страницу
      */
-    @RequestMapping(value = "/challenge/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/challenge/{id}")
     public String addChallenge(@PathVariable("id") Long id) {
         GameApplication game_application = gameApplicationService.getById(id);
         ChessMan opponent = game_application.getChessMan();
@@ -275,7 +273,7 @@ public class HomePageController {
      * @param id код записи из базы данных
      * @return домашнюю страницу с изменениями
      */
-    @RequestMapping(value = "/cancel/{id}", method = RequestMethod.GET)
+    @DeleteMapping(value = "/cancel/{id:\\d+}")
     public String cancelChallenge(@PathVariable("id") Long id) {
         challengeService.removeChallenge(id);
         return "redirect:/whomChallenge";
@@ -283,14 +281,12 @@ public class HomePageController {
 
     /**
      * Принимает или отменяет приглашение к игре, полученное от оппонента
-     * @param param строка, содержащая параметры, разделённые знаком '&'
+     * @param id идентификатор записи в таблице
+     * @param takeIt флаг принятия/отказа вызова
      * @return домашнюю страницу с данными о принятых или отменённых приглашениях
      */
-    @RequestMapping(value = "/take/{param}", method = RequestMethod.GET)
-    public String takeChallenge(@PathVariable("param") String param) {
-        String[] parameters = param.split("&");// получаем массив параметров
-        Long id = Long.valueOf(parameters[0]);
-        boolean takeIt = parameters[1].equals("true");
+    @GetMapping(value = "/take/{id:\\d+}/{takeIt}")
+    public String takeChallenge(@PathVariable("id") Long id, @PathVariable("takeIt") boolean takeIt) {
         Optional<Challenge> serviceBy_id = challengeService.getBy_Id(id);
         if (serviceBy_id.isPresent()) {
             Challenge challenge = serviceBy_id.get();
@@ -317,13 +313,12 @@ public class HomePageController {
     public String exit() {
         return "redirect:/start";
     }
-
     /**
      * Создаёт игровую партию и пересылает на страницу игры
      * @param id идентификатор оппонента, с которым создаётся игровая партия
      * @return страницу с игрой
      */
-    @GetMapping(value = "/game/{id}")
+    @GetMapping(value = "/game/{id:\\d+}")
     public String goToGame(@PathVariable("id") Long id) {
         ChessMan opponent = chessManService.getBy_Id(id).orElseThrow();
         chessPartyService.addParty(chessMan, opponent);
@@ -342,7 +337,7 @@ public class HomePageController {
         logger.info("historyList: size=" + historyList.size());
         String message;
         StringBuilder tableData = new StringBuilder();
-        String headers = "";
+        String headers = null;
         if (historyList.isEmpty()) {
 
             message = "Ещё нет ни одной начатой партии.";

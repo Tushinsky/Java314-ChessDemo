@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +59,11 @@ public class ChessPartyServiceImpl implements ChessPartyService{
 
         // добавляем созданную партию в историю
         historyService.addHistory(chessParty);
+    }
+
+    @Override
+    public Optional<ChessParty> getBy_Id(Long id) {
+        return repository.findById(id);
     }
 
 }
