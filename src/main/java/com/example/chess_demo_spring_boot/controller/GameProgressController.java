@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.Socket;
+import java.net.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -131,6 +130,17 @@ public class GameProgressController {
                 .moving(message)
                 .build();
         gpd.add(dto);
+        try {
+            final URL url = new URL("http://localhost:8080/progress/update");
+            final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
