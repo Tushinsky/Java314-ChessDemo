@@ -1,24 +1,27 @@
 package com.example.chess_demo_spring_boot.controller;
 
-//import com.example.chess_demo_spring_boot.client_server.JClient;
 import com.example.chess_demo_spring_boot.domain.*;
 import com.example.chess_demo_spring_boot.dto.GameProgressDto;
 import com.example.chess_demo_spring_boot.service.ChessManService;
 import com.example.chess_demo_spring_boot.service.GameProgressService;
 import com.example.chess_demo_spring_boot.service.HistoryService;
 import com.example.chess_demo_spring_boot.service.OpponentService;
-import lombok.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
-import java.net.*;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,13 +31,13 @@ import java.util.logging.Logger;
 public class GameProgressController {
     private final GameProgressService progressService;
     private final HistoryService historyService;
-//    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final JClient client = new JClient();
+    private final JClient jClient = new JClient();
     private final OpponentService opponentService;
     private final ChessManService chessManService;
-//    private History history;
-    private Opponent opponent;
-    private ChessMan chessMan;
+//    private Opponent opponent;
+    private String opponentNic;
+//    private ChessMan chessMan;
+    private String chessManNic;
     private final List<GameProgressDto> gpd = new ArrayList<>();
     private ChessParty chessParty;
     /**
@@ -46,28 +49,24 @@ public class GameProgressController {
     @GetMapping(value="/progress/{historyId:\\d+}/{chessmanId:\\d+}")
     public String getProgress(@PathVariable("historyId") Long id, @PathVariable ("chessmanId") Long chessmanId,
                               Model model) {
-//        Long idHistory = Long.valueOf(id);
         // получаем оппонента по коду партии
-
         Optional<History> optionalHistory = historyService.getById(id);
         if(optionalHistory.isPresent()) {
             History history = optionalHistory.get();
             chessParty = history.getChessParty();
-            opponent = opponentService.getByChessParty(chessParty);
+            opponentNic = opponentService.getByChessParty(chessParty).getChessMan().getNic();
 
-            chessMan = chessManService.getBy_Id(chessmanId).get();
-            if(client.getNicName() == null) {
+            chessManNic = chessManService.getBy_Id(chessmanId).get().getNic();
+            if(jClient.getNicName() == null) {
 
-                client.setNicName(chessMan.getNic());
-                client.start();
-                if(client.isConnected()) {
+                jClient.setNicName(chessManNic);
+                jClient.start();
+                if(jClient.isConnected()) {
                     return partyProgress(model);
                 } else {
                     model.addAttribute("errorMessage", "Соединение с сервером отсутствует.");
                 }
             }
-
-
         }
         return "progress";
     }
@@ -88,36 +87,32 @@ public class GameProgressController {
                     .chessManName("")
                     .moving("")
                     .build();
-            setModelAttribute(model);
-//            model.addAttribute("errorMessage", "Соединение с сервером установлено");
-            model.addAttribute("dto", dto);
+        setModelAttribute(model);
+        model.addAttribute("dto", dto);
         return "progress";
     }
 
-    /**
-     * Отсылает сообщение на сервер и в базу данных
-     * @param dto аттрибут модели страницы - объект класса GameProgressDto (имя пользователя и шаг, им сделанный)
-     * @param model модель страницы
-     * @return страницу с изменениями
-     */
     @PostMapping(value="/progress/send")
     public String sendMessage(@ModelAttribute("dto") GameProgressDto dto, Model model) {
         // передаём сообщение на сервер
-        client.sendMessage(dto.getMoving());
-        dto.setChessManName(chessMan.getNic());
+        jClient.sendMessage(dto.getMoving());
+        dto.setChessManName(chessManNic);
         System.out.println("dto=" + dto.toString());
         gpd.add(dto);
         setModelAttribute(model);
-//        model.addAttribute("partyDate", chessParty.getPartydate());
-//        model.addAttribute("progressList", gpd);
-//        model.addAttribute("connect", true);
-//        model.addAttribute("errorMessage", "Соединение с сервером установлено");
+        return "progress";
+    }
+
+    @PostMapping("/progress/received")
+    public String getMessage(Model model) {
+        System.out.println("ENTER");
+        setModelAttribute(model);
+        System.out.println("EXIT");
         return "progress";
     }
 
     /**
      * Задаёт аттрибуты модели страницы
-     * @param model модель страниц
      */
     private void setModelAttribute(Model model) {
         model.addAttribute("partyDate", chessParty.getPartydate());
@@ -126,19 +121,24 @@ public class GameProgressController {
 
     private void receivedMessage(String message) {
         GameProgressDto dto = GameProgressDto.builder()
-                .chessManName(opponent.getChessMan().getNic())
+                .chessManName(opponentNic)
                 .moving(message)
                 .build();
+        System.out.println("before GPDsize=" + gpd.size());
         gpd.add(dto);
+        System.out.println("after GPDsize=" + gpd.size());
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/progress/received"))
+                .version(HttpClient.Version.HTTP_2)
+                .timeout(Duration.of(5, ChronoUnit.SECONDS))
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .build();
         try {
-            final URL url = new URL("http://localhost:8080/progress/update");
-            final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
-
-        } catch (IOException e) {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.statusCode());
+            System.out.println(response.body());
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
@@ -147,21 +147,6 @@ public class GameProgressController {
      * Класс, отвечающий за обмен сообщениями с другим оппонентом по игре
      */
     private class JClient {
-        public int getSERVER_PORT() {
-            return SERVER_PORT;
-        }
-
-        public void setSERVER_PORT(int SERVER_PORT) {
-            this.SERVER_PORT = SERVER_PORT;
-        }
-
-        public String getLOCAL_HOST() {
-            return LOCAL_HOST;
-        }
-
-        public void setLOCAL_HOST(String LOCAL_HOST) {
-            this.LOCAL_HOST = LOCAL_HOST;
-        }
 
         public String getNicName() {
             return nicName;
@@ -175,6 +160,14 @@ public class GameProgressController {
             return connected;
         }
 
+        public int getSERVER_PORT() {
+            return SERVER_PORT;
+        }
+
+        public String getLOCAL_HOST() {
+            return LOCAL_HOST;
+        }
+
         private int SERVER_PORT;// 8192 - номер канала для связи с сервером
         private String LOCAL_HOST;// IP адрес компьютера
         private String nicName;
@@ -182,11 +175,8 @@ public class GameProgressController {
         private ClientSomething clientSomething;
 
         public JClient() {
-//        try {
             // читаем свойства подключения
             readConnectProperties();
-
-
         }
 
         /**
@@ -237,7 +227,7 @@ public class GameProgressController {
             private BufferedReader keyBoard;
             private final String nicName;// имя клиента
             private String dTime;// строковое представление времени передачи
-            private Logger logger = Logger.getLogger(JClient.class.getName());
+            private final Logger logger = Logger.getLogger(JClient.class.getName());
             /**
              * Устанавливает свойства соединения и имя клиента в сети
              * @param SERVER_PORT порт связи с сервером
@@ -332,11 +322,11 @@ public class GameProgressController {
                         while(true) {
                             if(!socket.isClosed()) {
                                 word = dis.readLine();
+                                System.out.println(word);
                                 if(word.equalsIgnoreCase("quit")) {
                                     ClientSomething.this.downService();
                                     break;
                                 }
-                                System.out.println(word);
                                 receivedMessage(word);
                             } else {
                                 break;
@@ -357,8 +347,6 @@ public class GameProgressController {
                     while(true) {
                         String userWord;
                         try {
-                            System.out.println(Arrays.toString(GameProgressController.class.getMethods()));
-
                             // время передачи сообщения
                             Date time = new Date();
                             // формат времени

@@ -17,32 +17,15 @@
 
 <section class="one_">
     <#include "error/error.ftlh" />
-        <form class="send" method="post" action="/progress/send">
-            <div class="history_">
-                <h1>Шахматная партия от ${partyDate}</h1>
-                <div>
-                    <label for="moving">Ваш ход:</label>
-                    <input id="moving" type="text" name="moving"/>
-                    <input type="submit" value="Send" />
-                </div>
-                <table>
-                    <tr>
-                        <th>Оппонент</th>
-                        <th>Ходы</th>
-                    </tr>
-
-                    <#if progressList??>
-                         <#list progressList as progress>
-                             <tr>
-                                 <td>${progress.chessManName}</td>
-                                 <td>${progress.moving}</td>
-                            </tr>
-                         </#list>
-                    </#if>
-                </table>
+    <form class="send" method="post" action="/progress/send">
+            <h1>Шахматная партия от ${partyDate}</h1>
+            <div>
+                <label for="moving">Ваш ход:</label>
+                <input id="moving" type="text" name="moving"/>
+                <input type="submit" value="Send" />
             </div>
-        </form>
-
+    </form>
+    <#include "gameprogress.ftlh" />
 </section>
 </body>
 </html>
