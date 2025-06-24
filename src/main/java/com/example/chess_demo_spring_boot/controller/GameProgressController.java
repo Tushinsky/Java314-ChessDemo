@@ -46,7 +46,7 @@ public class GameProgressController {
      * @param model модель страницы
      * @return страница с данными
      */
-    @GetMapping(value="/progress/{historyId:\\d+}/{chessmanId:\\d+}")
+    @GetMapping(value="/game-progress/{historyId:\\d+}/{chessmanId:\\d+}")
     public String getProgress(@PathVariable("historyId") Long id, @PathVariable ("chessmanId") Long chessmanId,
                               Model model) {
         // получаем оппонента по коду партии
@@ -68,7 +68,7 @@ public class GameProgressController {
                 }
             }
         }
-        return "progress";
+        return "game-progress";
     }
 
     private String partyProgress(Model model) {
@@ -84,31 +84,30 @@ public class GameProgressController {
                 });
             }
             GameProgressDto dto = GameProgressDto.builder()
-                    .chessManName("")
+                    .chessManName(chessManNic)
                     .moving("")
                     .build();
         setModelAttribute(model);
         model.addAttribute("dto", dto);
-        return "progress";
+        return "game-progress";
     }
 
-    @PostMapping(value="/progress/send")
+    @PostMapping(value="/game-progress/send")
     public String sendMessage(@ModelAttribute("dto") GameProgressDto dto, Model model) {
         // передаём сообщение на сервер
         jClient.sendMessage(dto.getMoving());
-        dto.setChessManName(chessManNic);
+//        dto.setChessManName(chessManNic);
         System.out.println("dto=" + dto.toString());
         gpd.add(dto);
         setModelAttribute(model);
-        return "progress";
+        return "game-progress";
     }
 
-    @PostMapping("/progress/received")
-    public String getMessage(Model model) {
-        System.out.println("ENTER");
+    @PostMapping("/game-progress")
+    public String receivedMessage(Model model) {
         setModelAttribute(model);
-        System.out.println("EXIT");
-        return "progress";
+        System.out.println("model:\n\r" + model.toString());
+        return "game-progress";
     }
 
     /**
@@ -119,29 +118,6 @@ public class GameProgressController {
         model.addAttribute("progressList", gpd);
     }
 
-    private void receivedMessage(String message) {
-        GameProgressDto dto = GameProgressDto.builder()
-                .chessManName(opponentNic)
-                .moving(message)
-                .build();
-        System.out.println("before GPDsize=" + gpd.size());
-        gpd.add(dto);
-        System.out.println("after GPDsize=" + gpd.size());
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/progress/received"))
-                .version(HttpClient.Version.HTTP_2)
-                .timeout(Duration.of(5, ChronoUnit.SECONDS))
-                .POST(HttpRequest.BodyPublishers.noBody())
-                .build();
-        try {
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.statusCode());
-            System.out.println(response.body());
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     /**
      * Класс, отвечающий за обмен сообщениями с другим оппонентом по игре
@@ -327,7 +303,7 @@ public class GameProgressController {
                                     ClientSomething.this.downService();
                                     break;
                                 }
-                                receivedMessage(word);
+                                ClientSomething.this.receivedMessage(word);
                             } else {
                                 break;
                             }
@@ -419,6 +395,29 @@ public class GameProgressController {
                 } catch (IOException ex) {
                     logger.log(Level.SEVERE, null, ex);
                     this.downService();
+                }
+            }
+
+            private void receivedMessage(String message) {
+                GameProgressDto dto = GameProgressDto.builder()
+                        .chessManName(opponentNic)
+                        .moving(message)
+                        .build();
+                gpd.add(dto);
+
+                HttpClient httpClient = HttpClient.newHttpClient();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create("http://localhost:8080/game-progress"))
+                        .version(HttpClient.Version.HTTP_2)
+                        .timeout(Duration.of(5, ChronoUnit.SECONDS))
+                        .POST(HttpRequest.BodyPublishers.noBody())
+                        .build();
+                try {
+                    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+                    System.out.println(response.statusCode());
+                    System.out.println(response.body());
+                } catch (IOException | InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }

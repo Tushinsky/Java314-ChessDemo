@@ -71,7 +71,7 @@ public class HomePageController {
         logger.info("historyList: size=" + historyList.size());
         String message;
         StringBuilder tableData = new StringBuilder();
-        String headers = null;
+//        String headers = null;
         StringBuilder listUnit = new StringBuilder();
         if (historyList.size() == 0) {
 
@@ -80,8 +80,8 @@ public class HomePageController {
         } else {
             // формируем данные для вставки в таблицу
             message = "Проведённые партии";
-            headers = "<tr><th width='150'>Оппонент</th><th width='250'>Дата проведения партии</th>" +
-                    "<th width='100'>Результат</th><th width='100'>Ходы</th></tr>";
+            tableData.append("<tr><th width='150'>Оппонент</th><th width='250'>Дата проведения партии</th>" +
+                    "<th width='100'>Результат</th><th width='100'>Ходы</th></tr>");
             // данные
             for (HistoryDto item : historyList) {
                 tableData.append("<tr>").append("<td>")
@@ -90,12 +90,13 @@ public class HomePageController {
                         .append("<td><a href=\"/progress/").append(item.getId()).append("\"")
                         .append("    target=\"_blank\">Посмотреть</a></td>")
                         .append("</tr>");
-                listUnit.append("<div class=\"list_unit\" data-tooltip=\"" + item.getResult() + "\">")
-                        .append("<span>" + item.getPartyDate() + ":\n" + item.getOpponent() + "</span>")
+                listUnit.append("<div class=\"list_unit\" data-tooltip=\"").append(item.getResult())
+                        .append("\">").append("<span>").append(item.getPartyDate()).append(":\n")
+                        .append(item.getOpponent()).append("</span>")
                         .append("</div>");
             }
         }
-        setModelAttribute(model, message,(headers + tableData));
+        setModelAttribute(model, message,tableData.toString());
         model.addAttribute("listUnit", listUnit);
         return "home";
     }
@@ -106,15 +107,15 @@ public class HomePageController {
         String message;
         StringBuilder tableData = new StringBuilder();
         StringBuilder list_unitData = new StringBuilder();
-        String headers = null;
+//        String headers = null;
 //        model.addAttribute("gameApp", game_application);
         if (challengesWhom.size() == 0) {
             message = "Вы ещё никого не пригласили сыграть!";
         } else {
             message = "Приглашаете сыграть";
-            headers = "<tr>" +
+            tableData.append("<tr>" +
                     "<th>Ник</th><th>Вызов принят</th><th>Действие</th>" +
-                    "</tr>";
+                    "</tr>");
             for(ChallengeDto item : challengesWhom) {
                 boolean isTakeIt = item.isTakeIt();
                 String takeIt;
@@ -137,7 +138,7 @@ public class HomePageController {
                         .append("</div>");
             }
         }
-        setModelAttribute(model, message,(headers + tableData));
+        setModelAttribute(model, message,tableData.toString());
         model.addAttribute("list_unitData", list_unitData);
         return "home";
     }
@@ -148,14 +149,14 @@ public class HomePageController {
         String message;
         StringBuilder tableData = new StringBuilder();
         StringBuilder list_unitData = new StringBuilder();
-        String headers = "";
+//        String headers = "";
         if(challengesWho.size() == 0) {
             message = "Вас ещё никто не пригласил сыграть.";
         } else {
             message = "Приглашают с ними сыграть";
-            headers = "<tr>" +
+            tableData.append("<tr>" +
                     "<th>Ник</th>" + "<th>Вызов принят</th>" + "<th>Действие</th>" +
-                    "</tr>";
+                    "</tr>");
             for(ChallengeDto item : challengesWho) {
                 tableData.append("<tr>\n").append("<td>").append(item.getChessManName()).append("</td>\n")
                         .append("<td>").append(item.isTakeIt() ? "yes" : "no").append("</td>\n")
@@ -169,7 +170,7 @@ public class HomePageController {
                         .append("</div>");
             }
         }
-        setModelAttribute(model, message,(headers + tableData));
+        setModelAttribute(model, message, tableData.toString());
         model.addAttribute("list_unitData", list_unitData);
         return "home";
     }
@@ -337,7 +338,7 @@ public class HomePageController {
         logger.info("historyList: size=" + historyList.size());
         String message;
         StringBuilder tableData = new StringBuilder();
-        String headers = null;
+//        String headers = null;
         if (historyList.isEmpty()) {
 
             message = "Ещё нет ни одной начатой партии.";
@@ -345,21 +346,21 @@ public class HomePageController {
         } else {
             // формируем данные для вставки в таблицу
             message = "Отложенные партии";
-            headers = "<tr><th width='150'>Оппонент</th><th width='250'>Дата начала партии</th>" +
-                    "<th width='100'>Результат</th><th width='100'>Действие</th></tr>";
+            tableData.append("<tr><th width='150'>Оппонент</th><th width='250'>Дата начала партии</th>" +
+                    "<th width='100'>Результат</th><th width='100'>Действие</th></tr>");
             // данные
             for (HistoryDto item : historyList) {
                 tableData.append("<tr>").append("<td>")
                         .append(item.getOpponent()).append("</td>")
                         .append("<td>").append(item.getPartyDate()).append("</td>")
                         .append("<td>").append(item.getResult()).append("</td>")
-                        .append("<td><a href=\"/progress/").append(item.getId()).append("/")
+                        .append("<td><a href=\"/game-progress/").append(item.getId()).append("/")
                         .append(chessMan.getId()).append("\"")
                         .append("    target=\"_blank\">Продолжить</a></td>")
                         .append("</tr>");
             }
         }
-        setModelAttribute(model, message,(headers + tableData));
+        setModelAttribute(model, message, tableData.toString());
         return "home";
     }
 
